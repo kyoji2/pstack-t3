@@ -115,6 +115,6 @@ Generation and updates use a repository operation lock at `.cache/.operation-loc
 node bin/sync-pstack-t3.mjs recover --publication
 ```
 
-Recovery checks `.publication.json`, the generated tree, the backup, and the source lock. It restores the previous tree and lock unless the update already committed and only journal cleanup remains. Partial candidates move into `.cache/recovered-candidate-*` for inspection. If the tree or lock has an unrelated change, recovery stops without overwriting it.
+Recovery checks `.publication.json`, the generated tree, the backup, and the source lock. It restores the previous tree and lock unless the update already committed and only journal cleanup remains. Partial candidates move into `.cache/recovered-candidate-*` for inspection. Remaining backups from committed publications move into `.cache/recovered-backup-*`. If the tree or lock has an unrelated change, recovery stops without overwriting it.
 
 If staging directories exist without a publication journal, inspect them before restoring or removing them. The CLI refuses to guess their origin.

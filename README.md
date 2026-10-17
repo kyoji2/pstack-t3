@@ -30,6 +30,8 @@ See [Install and update pstack-t3](docs/usage.md) for updates, temporary install
 
 Run `npm test` for the local regression suite. After `fetch`, run `npm run check` to verify the committed generated tree. Copied upstream scripts remain data during these checks. Optional upstream tools may require Bun when a workflow uses them.
 
+[Initial validation](docs/validation.md) records the file checks, temporary installation, and agent observations, including the workflows that have not been executed.
+
 ## Upstream and license
 
 The design follows the official [pstack generator](https://github.com/cursor/plugins/blob/09d06eb4b97a1020ab31e84030e38baf1099c7dc/scripts/generate-pstack-harness-trees.mjs) at commit `09d06eb4b97a1020ab31e84030e38baf1099c7dc`.
