@@ -11,11 +11,6 @@
   "linkPlaceholders": [
     { "path": "skills/why/references/synthesizer-prompt.md", "href": "url" }
   ],
-  "aliases": {
-    "p3-mode": "poteto-mode",
-    "p3-help": "poteto-help",
-    "setup-p3": "setup-pstack"
-  },
   "highImpact": [
     "^scripts/generate-pstack-harness-trees\\.mjs$",
     "^pstack/docs/harness/",

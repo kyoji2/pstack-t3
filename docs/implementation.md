@@ -82,11 +82,9 @@ The adapter defines the following mappings:
 | Skill routing | Read the generated target `SKILL.md` when the host cannot invoke the skill through a tool. |
 | Browser and device evidence | Use the host's available tools, including T3 preview and device tools when exposed. Report missing capabilities. |
 
-## Skill names and aliases
+## Skill names
 
-Canonical names match upstream. Optional migration aliases map `p3-mode` to `poteto-mode`, `p3-help` to `poteto-help`, and `setup-p3` to `setup-pstack`.
-
-Each alias has its own frontmatter name and reads the canonical skill. Aliases contain no duplicate workflow instructions.
+Skill names match upstream. The generator creates one entry point for each upstream skill directory.
 
 ## Model configuration
 
@@ -137,12 +135,11 @@ The installer has the following requirements:
 - Preserve the complete tree because skills refer to sibling skills, agent documents, and the adapter.
 - Validate all destination conflicts before changing links. Install, rollback, and recovery share a lock in the canonical target directory, independent of `--state-dir`.
 - Refuse to overwrite unmanaged files, directories, or links.
-- During explicit p3 migration, identify old links by their resolved source ownership.
 - Remove a retired link only when it still matches a previously managed link.
-- Preserve the state needed to restore the previous version and original p3 links.
+- Preserve the state needed to restore the previous version.
 - Report changed paths before rollback and preserve those paths.
 
-The migration retains the old p3-stack checkout and unrelated installed skills.
+Installation and rollback preserve unrelated skills.
 
 ## Acceptance criteria
 
@@ -165,9 +162,9 @@ Static file checks and runtime observations are separate evidence. Successful ge
 Implementation proceeds in this order:
 
 1. Source locking, deterministic generation, the adapter, and update reports.
-2. The setup replacement and compatibility aliases, including source-change checks.
+2. The workflow replacements, including source-change checks.
 3. Automated tests and representative T3 runs.
-4. Managed installation, migration, and rollback.
-5. Migration of the real local installation.
+4. Managed installation and rollback.
+5. Update of the real local installation.
 
 Scheduled upstream checks and automatic update PRs are later work. Upstream updates never install themselves.

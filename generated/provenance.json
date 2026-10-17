@@ -7,8 +7,8 @@
     "commit": "09d06eb4b97a1020ab31e84030e38baf1099c7dc"
   },
   "inputs": {
-    "adapter/rules.json": "56989c2bcf3944cf8ec2970c01cfd5af1ed925c6616d11ad92501248107dd0e2",
-    "adapter/t3.md": "178650a26b53c06b050b7598ce4567f1cfc8637a8d303210d5b737c37e47a62d"
+    "adapter/rules.json": "08813fd9a43a8eff361304a8e27f3f7ae5f06984dade2f17bb93a36e8239a991",
+    "adapter/t3.md": "7ae7c659db943c2536842a80c2e767c8d0c5b27e7f17342ff7c4b35df6ef99e9"
   },
   "requirements": {
     "task": [
@@ -304,7 +304,7 @@
     "docs/harness/t3.md": {
       "source": "adapter/t3.md",
       "transform": "copy",
-      "sha256": "178650a26b53c06b050b7598ce4567f1cfc8637a8d303210d5b737c37e47a62d",
+      "sha256": "7ae7c659db943c2536842a80c2e767c8d0c5b27e7f17342ff7c4b35df6ef99e9",
       "executable": false
     },
     "skills/architect/SKILL.md": {
@@ -519,22 +519,6 @@
       "transform": "copy",
       "adapterInjected": true,
       "sha256": "d362805a5cfed17595ea6a86b13cbe3a82dddb3d1c10d28f402472f2c9a4fec6",
-      "executable": false
-    },
-    "skills/p3-help/SKILL.md": {
-      "source": "adapter/rules.json",
-      "canonical": "poteto-help",
-      "transform": "alias",
-      "adapterInjected": true,
-      "sha256": "8aa75e302eeb1e2130fcd65f8dcaa68165b45c6ec504cae7f52df324c8b31726",
-      "executable": false
-    },
-    "skills/p3-mode/SKILL.md": {
-      "source": "adapter/rules.json",
-      "canonical": "poteto-mode",
-      "transform": "alias",
-      "adapterInjected": true,
-      "sha256": "058151385e6ef9359e12552ca5665706133bc8149d232ec9b476c6bd74663f19",
       "executable": false
     },
     "skills/poteto-help/SKILL.md": {
@@ -1119,22 +1103,14 @@
       "sha256": "f81b8697e7366fbbc18feba52c6e3253a101f751091364ebc4396a1d9b5753b4",
       "executable": false
     },
-    "skills/setup-p3/SKILL.md": {
-      "source": "adapter/rules.json",
-      "canonical": "setup-pstack",
-      "transform": "alias",
-      "adapterInjected": true,
-      "sha256": "b65760f2b8c904ab81b32b16dd88a75d2afbbf77c3ebcfa339fb49b55c81c4bb",
-      "executable": false
-    },
     "skills/setup-pstack/SKILL.md": {
       "source": "pstack/skills/setup-pstack/SKILL.md",
       "override": "overrides/skills/setup-pstack/SKILL.md",
       "sourceHash": "d61b47256a18155a81c8e5ef95e3cc6569ce8c18317c35c4dd9c8015cf68cb59",
-      "overrideHash": "41ce2dd3956a703a8dd1d5bb25b6b1f0b00e51802bb70b1237f4afd8c870065e",
+      "overrideHash": "aa0a76f3c55965037394bbf85f0b2202b61b0c7fba52392284870066eeb54a5f",
       "transform": "override",
       "adapterInjected": true,
-      "sha256": "6970beba84fbd9dffea134ca4ecfefcddb4884e6f6a202070cfdba35f5d6263d",
+      "sha256": "26dc2c75eeac31a7d5b6fba47ee5e4b4ff9c3af9998d0b46e137d23820a71414",
       "executable": false
     },
     "skills/sharpen/SKILL.md": {

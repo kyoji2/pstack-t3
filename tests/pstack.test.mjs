@@ -25,7 +25,7 @@ function fixture() {
   const adapter = {
     local: new Map([['t3.md', entry('# T3\n<!-- covers:task -->\nRead the tool schema.')]]),
     overrides: new Map(),
-    rules: { reviewedSources: { [GENERATOR]: hash(source.get(GENERATOR).bytes) }, overrides: {}, aliases: { 'p3-mode': 'poteto-mode' }, requirements: [{ id: 'task', pattern: '`Task`' }], highImpact: ['poteto-mode', 'generate-pstack'] },
+    rules: { reviewedSources: { [GENERATOR]: hash(source.get(GENERATOR).bytes) }, overrides: {}, requirements: [{ id: 'task', pattern: '`Task`' }], highImpact: ['poteto-mode', 'generate-pstack'] },
   };
   return { source, adapter };
 }
@@ -57,7 +57,6 @@ test('generation pins omitted links, normalizes display names, retains permissio
   assert.equal(provenance.files['skills/poteto-mode/SKILL.md'].originalFrontmatterName, 'Poteto Mode');
   assert.equal(provenance.files.LICENSE.sha256, hash('upstream license'));
   assert.deepEqual(provenance.roles, ['feature, refactoring']);
-  assert.match(first.get('skills/p3-mode/SKILL.md').bytes.toString(), /name: p3-mode/);
   assert.ok(!JSON.stringify(provenance).includes(tmpdir()));
 });
 
@@ -159,6 +158,13 @@ test('update report identifies high-impact content, new requirements, and change
   assert.deepEqual(report.roles.after, ['feature, refactoring']);
 });
 
+test('the installer CLI rejects unsupported options', () => {
+  assert.throws(() => execFileSync(process.execPath, [new URL('../bin/sync-pstack-t3.mjs', import.meta.url).pathname, 'install', '--migrate-from', '/unused'], { stdio: 'pipe' }), (error) => {
+    assert.match(error.stderr.toString(), /Unexpected argument: --migrate-from/);
+    return true;
+  });
+});
+
 test('all installation collisions are checked before any link changes', (t) => {
   const root = sandbox(t);
   const options = installOptions(root);
@@ -171,26 +177,19 @@ test('all installation collisions are checked before any link changes', (t) => {
   assert.equal(readlinkSync(join(options.target, 'alpha')), '/unrelated');
 });
 
-test('explicit migration restores original links on rollback and leaves unrelated skills', (t) => {
+test('installation and rollback preserve unrelated skills', (t) => {
   const root = sandbox(t);
   const options = installOptions(root);
-  const legacy = join(root, 'old');
   mkdirSync(options.target);
-  writeTree(legacy, new Map([
-    ['skills/alpha/SKILL.md', entry(skill('alpha'))],
-    ['skills/retired/SKILL.md', entry(skill('retired'))],
-  ]));
-  symlinkSync(join(legacy, 'skills', 'alpha'), join(options.target, 'alpha'));
-  symlinkSync(join(legacy, 'skills', 'retired'), join(options.target, 'retired'));
   mkdirSync(join(options.target, 'unrelated'));
-  const result = install(installedFiles(), { ...options, migrateFrom: legacy });
-  assert.equal(result.migrated, 2);
-  assert.equal(existsSync(join(options.target, 'retired')), false);
+  symlinkSync('/external/skill', join(options.target, 'external'));
+  install(installedFiles(), options);
   assert.equal(lstatSync(join(options.target, 'unrelated')).isDirectory(), true);
-  assert.ok(readlinkSync(join(options.target, 'alpha')).includes('/versions/'));
+  assert.equal(readlinkSync(join(options.target, 'external')), '/external/skill');
   rollback(options);
-  assert.equal(readlinkSync(join(options.target, 'alpha')), join(legacy, 'skills', 'alpha'));
-  assert.equal(readlinkSync(join(options.target, 'retired')), join(legacy, 'skills', 'retired'));
+  assert.equal(existsSync(join(options.target, 'alpha')), false);
+  assert.equal(lstatSync(join(options.target, 'unrelated')).isDirectory(), true);
+  assert.equal(readlinkSync(join(options.target, 'external')), '/external/skill');
   assert.equal(installationStatus(options).skills, 0);
 });
 

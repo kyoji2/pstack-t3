@@ -9,7 +9,7 @@ Before following this skill in T3 Code, read [the T3 adapter](../../docs/harness
 
 # Set up pstack models
 
-Create `pstack-models.md` using models and options available in this T3 session. This workflow creates its own configuration and does not read p3 model files.
+Create `pstack-models.md` using models and options available in this T3 session.
 
 ## Read the live catalog
 

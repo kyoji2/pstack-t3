@@ -1,4 +1,4 @@
-import { existsSync, lstatSync, mkdirSync, readlinkSync, readdirSync, realpathSync, renameSync, rmSync, symlinkSync, chmodSync } from 'node:fs';
+import { existsSync, lstatSync, mkdirSync, readlinkSync, realpathSync, renameSync, rmSync, symlinkSync, chmodSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { basename, dirname, join, resolve } from 'node:path';
 import { atomicWrite, hash, json, readJson, readTree, treeId, withLock, writeTree } from './files.mjs';
@@ -120,26 +120,12 @@ export function install(files, options = {}) {
     checkSnapshot(paths.target, state.managed);
     const names = [...files.keys()].filter((path) => /^skills\/[^/]+\/SKILL\.md$/.test(path)).map((path) => path.split('/')[1]);
     if (!names.length) throw new Error('No skills to install.');
-    const migrated = {};
-    if (options.migrateFrom) {
-      const legacy = realpathSync(resolve(options.migrateFrom));
-      for (const name of readdirSync(paths.target)) {
-        if (!/^[a-z0-9][a-z0-9-]*$/.test(name)) continue;
-        const path = join(paths.target, name);
-        if (!lstatSync(path).isSymbolicLink()) continue;
-        const raw = readlinkSync(path);
-        let actual;
-        try { actual = realpathSync(path); } catch { continue; }
-        const expected = join(legacy, 'skills', name);
-        if (existsSync(join(expected, 'SKILL.md')) && actual === realpathSync(expected)) migrated[name] = raw;
-      }
-    }
-    const affected = [...new Set([...Object.keys(state.managed), ...names, ...Object.keys(migrated)])].sort();
+    const affected = [...new Set([...Object.keys(state.managed), ...names])].sort();
     const before = {};
     for (const name of affected) {
       const current = linkAt(join(paths.target, name));
-      if (current !== null && !Object.hasOwn(state.managed, name) && !Object.hasOwn(migrated, name)) {
-        throw new Error(`Unmanaged link at ${join(paths.target, name)}. Use explicit --migrate-from only for the installation that owns it.`);
+      if (current !== null && !Object.hasOwn(state.managed, name)) {
+        throw new Error(`Unmanaged link at ${join(paths.target, name)}. Resolve the conflict before installing.`);
       }
       before[name] = current;
     }
@@ -153,7 +139,7 @@ export function install(files, options = {}) {
       history: [...state.history, { before, after, managedBefore: state.managed, installedBefore: state.installed }],
     };
     apply(paths, before, after, next);
-    return { version: id, skills: names.length, migrated: Object.keys(migrated).length };
+    return { version: id, skills: names.length };
   });
 }
 

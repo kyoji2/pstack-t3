@@ -18,17 +18,7 @@ Run `setup-pstack` to choose models. A role without configuration inherits the p
 
 The CLI runs from any working directory when invoked by its absolute path. It uses the repository containing the executable. There is no npm dependency installation step.
 
-## Replace a p3-stack installation
-
-Pass the old checkout explicitly:
-
-```sh
-node bin/sync-pstack-t3.mjs install --migrate-from /path/to/p3-stack
-```
-
-The installer replaces only links whose resolved targets match skills in that checkout. It retains unrelated skills and the old checkout. If a generated skill name conflicts with an unmanaged path, installation stops before changing links.
-
-The aliases `p3-mode`, `p3-help`, and `setup-p3` read the new canonical skills. No model configuration is imported.
+If a skill name conflicts with an unmanaged path, installation stops before changing links. Resolve the conflict before retrying.
 
 ## Test a separate target
 

@@ -104,13 +104,6 @@ export function render(source, lock, adapter) {
   }
   files.set('docs/harness/t3.md', local.get('t3.md'));
   origins['docs/harness/t3.md'] = { source: 'adapter/t3.md', transform: 'copy' };
-  for (const [alias, canonical] of Object.entries(rules.aliases)) {
-    safePath(alias); safePath(canonical);
-    if (alias.includes('/') || canonical.includes('/') || !files.has(`skills/${canonical}/SKILL.md`) || has(files, `skills/${alias}`)) throw new Error(`Invalid or colliding alias: ${alias}`);
-    const path = `skills/${alias}/SKILL.md`;
-    files.set(path, entry(`---\nname: ${alias}\ndescription: Compatibility entry point for ${canonical}.\ndisable-model-invocation: true\n---\n\n# ${alias}\n\nRead [${canonical}](../${canonical}/SKILL.md) and follow it.\n`));
-    origins[path] = { source: 'adapter/rules.json', canonical, transform: 'alias' };
-  }
   for (const [path, file] of files) {
     if (/^skills\/[^/]+\/SKILL\.md$/.test(path)) {
       const text = file.bytes.toString('utf8');

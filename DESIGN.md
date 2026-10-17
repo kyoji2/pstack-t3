@@ -2,7 +2,7 @@
 
 ## Why generate the T3 version
 
-p3-stack adapts pstack by rewriting its skills for T3 Code. Those edits include tool names, model selection, delegation, and entry-point names. When upstream changes a skill, the maintainer must separate the upstream change from the T3 rewrite.
+Adapting pstack by rewriting every skill creates differences in tool names, model selection, delegation, and entry-point names. When upstream changes a skill, the maintainer must separate the upstream change from the T3 rewrite.
 
 pstack-t3 moves the shared T3 behavior into one adapter document. A generator copies the official skills and adds an instruction to read that adapter. Most upstream files then reach the generated tree without changes to their bodies.
 
@@ -22,7 +22,7 @@ Each replacement has a recorded upstream source hash. A change to that source re
 
 ## Names and model choices
 
-Canonical skill names stay aligned with upstream, including `poteto-mode`, `poteto-help`, and `setup-pstack`. Renaming every reference would create more differences to maintain. Thin aliases can preserve the old p3 entry points during migration.
+Skill names match upstream, including `poteto-mode`, `poteto-help`, and `setup-pstack`. Renaming every reference would create more differences to maintain.
 
 Model choices belong to the user. The proposed configuration is `pstack-models.md`, with a project file taking precedence over the global file. The setup workflow creates this configuration from the live T3 model catalog. User model files remain outside this public repository.
 
@@ -40,13 +40,13 @@ Term detection has a limit. It can identify a new tool name, but it cannot prove
 
 Updating the repository prepares a candidate version. Installation changes which version the local agent reads. Keeping those actions separate allows review before an update affects active work.
 
-The installer uses an immutable local version directory and records the links it manages. It checks all destination conflicts before changing links. During p3 migration, it replaces links only when their resolved targets belong to the old installation.
+The installer uses an immutable local version directory and records the links it manages. It checks all destination conflicts before changing links and refuses to replace unmanaged paths.
 
-Rollback restores the recorded previous links. If another process has changed a managed path, rollback reports the conflict instead of overwriting it. The old p3-stack checkout remains available during migration.
+Rollback restores the recorded previous links. If another process has changed a managed path, rollback reports the conflict instead of overwriting it.
 
 ## Initial scope
 
-The first release covers source locking, generation, update reports, the setup replacement, compatibility aliases, installation, and rollback. Validation includes temporary installations and representative T3 workflows before the real installation changes.
+The first release covers source locking, generation, update reports, the workflow replacements, installation, and rollback. Validation includes temporary installations and representative T3 workflows before the real installation changes.
 
 Scheduled update checks and automatic update PRs come later. The first implementation needs to produce useful reports and preserve a working installation when an update fails.
 

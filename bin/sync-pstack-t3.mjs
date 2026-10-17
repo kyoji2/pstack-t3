@@ -13,7 +13,7 @@ const [command = 'help', ...args] = process.argv.slice(2);
 const allowed = {
   help: [], fetch: [], generate: ['check'], update: ['ref'],
   status: ['online', 'ref', 'target', 'state-dir'],
-  install: ['target', 'state-dir', 'migrate-from'],
+  install: ['target', 'state-dir'],
   rollback: ['target', 'state-dir'], recover: ['publication', 'target', 'state-dir'],
 };
 
@@ -34,14 +34,14 @@ function options() {
 
 try {
   const opts = options();
-  const installation = { target: opts.target, stateRoot: opts['state-dir'], migrateFrom: opts['migrate-from'] };
+  const installation = { target: opts.target, stateRoot: opts['state-dir'] };
   const locked = () => readJson(join(root, 'upstream.lock.json'));
   const expected = () => render(loadSource(root, locked()), locked(), loadAdapter(root));
   const mutation = (action) => withLock(join(root, '.cache', '.operation-lock'), action);
   let result;
   switch (command) {
     case 'help':
-      result = 'sync-pstack-t3 fetch\nsync-pstack-t3 generate [--check]\nsync-pstack-t3 update [--ref main]\nsync-pstack-t3 status [--online] [--ref main] [--target DIR] [--state-dir DIR]\nsync-pstack-t3 install [--target DIR] [--state-dir DIR] [--migrate-from OLD_REPO]\nsync-pstack-t3 rollback [--target DIR] [--state-dir DIR]\nsync-pstack-t3 recover [--publication | --target DIR --state-dir DIR]';
+      result = 'sync-pstack-t3 fetch\nsync-pstack-t3 generate [--check]\nsync-pstack-t3 update [--ref main]\nsync-pstack-t3 status [--online] [--ref main] [--target DIR] [--state-dir DIR]\nsync-pstack-t3 install [--target DIR] [--state-dir DIR]\nsync-pstack-t3 rollback [--target DIR] [--state-dir DIR]\nsync-pstack-t3 recover [--publication | --target DIR --state-dir DIR]';
       break;
     case 'fetch':
       result = mutation(() => {

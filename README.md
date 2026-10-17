@@ -18,13 +18,13 @@ node bin/sync-pstack-t3.mjs generate --check
 node bin/sync-pstack-t3.mjs install
 ```
 
-For an existing p3-stack installation, use `install --migrate-from /path/to/p3-stack`. The installer checks conflicts before changing skill links. It does not import model configuration.
+The installer checks conflicts before changing skill links and preserves unrelated skills.
 
 See [Install and update pstack-t3](docs/usage.md) for updates, temporary installations, rollback, and recovery.
 
 ## Design documents
 
-[Design](DESIGN.md) explains how this project replaces a rewritten p3-stack installation and why generation makes upstream updates easier to review.
+[Design](DESIGN.md) explains how generation keeps T3 adaptation separate from upstream content and makes updates easier to review.
 
 [Implementation specification](docs/implementation.md) describes the files, T3 mappings, commands, and acceptance criteria.
 
