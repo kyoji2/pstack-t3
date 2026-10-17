@@ -48,6 +48,6 @@ Rollback restores the recorded previous links. If another process has changed a 
 
 The first release covers source locking, generation, update reports, the workflow replacements, installation, and rollback. Validation includes temporary installations and representative T3 workflows before the real installation changes.
 
-Scheduled update checks and automatic update PRs come later. The first implementation needs to produce useful reports and preserve a working installation when an update fails.
+A daily GitHub Actions check compares the locked source with upstream `main`. Relevant changes generate a candidate and run tests before creating or updating one PR. A blocked adaptation retains its report in the run summary and artifacts. The workflow leaves merging and local installation to the maintainer.
 
 The [implementation specification](docs/implementation.md) defines the proposed behavior and acceptance criteria.

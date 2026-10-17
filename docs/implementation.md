@@ -167,4 +167,10 @@ Implementation proceeds in this order:
 4. Managed installation and rollback.
 5. Update of the real local installation.
 
-Scheduled upstream checks and automatic update PRs are later work. Upstream updates never install themselves.
+## Daily automation
+
+`.github/workflows/update-upstream.yml` runs at 01:23 UTC each day and accepts manual dispatch. `scripts/prepare-update.mjs` compares the locked source with upstream `main`. It skips unrelated commits without changing the lock.
+
+A relevant candidate must pass generation, `npm test`, and `npm run check` before the workflow creates or updates the `automation/update-pstack` PR. A blocked adaptation leaves the lock and generated tree unchanged. The Actions summary and 30-day artifacts retain the report.
+
+The workflow serializes its runs and has a 15-minute timeout. It uses a repository token with contents and pull-request write permissions. It does not merge PRs or install skills.

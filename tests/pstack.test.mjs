@@ -8,6 +8,7 @@ import { atomicWrite, diffTrees, entry, hash, json, publish, readTree, recoverPu
 import { render, updateReport } from '../scripts/generate-t3-tree.mjs';
 import { install, installationStatus, installPaths, recover, rollback } from '../scripts/install.mjs';
 import { applyCandidate } from '../scripts/sync-upstream.mjs';
+import { formatReport, prepareCandidate } from '../scripts/prepare-update.mjs';
 import { GENERATOR, loadSource, REPOSITORY } from '../scripts/source.mjs';
 
 const lock = { version: 1, repository: REPOSITORY, source: 'pstack', commit: 'a'.repeat(40) };
@@ -146,6 +147,47 @@ test('successful candidate update removes stale output and publishes matching lo
   assert.equal(existsSync(join(root, 'generated', 'stale')), false);
   assert.equal(JSON.parse(readFileSync(join(root, 'upstream.lock.json'))).commit, candidate.commit);
   assert.equal(treeId(readTree(join(root, 'generated'))), treeId(render(changed, candidate, adapter)));
+});
+
+test('daily check skips unrelated commits without changing the lock or generated tree', (t) => {
+  const root = sandbox(t);
+  const { source, adapter } = fixture();
+  publish(root, render(source, lock, adapter), lock);
+  const beforeId = treeId(readTree(join(root, 'generated')));
+  const report = prepareCandidate(root, source, source, { ...lock, commit: 'b'.repeat(40) }, adapter);
+  assert.equal(report.changed, false);
+  assert.equal(JSON.parse(readFileSync(join(root, 'upstream.lock.json'))).commit, lock.commit);
+  assert.equal(treeId(readTree(join(root, 'generated'))), beforeId);
+  assert.match(formatReport(report), /No relevant upstream files changed/);
+});
+
+test('daily check generates relevant changes and formats review and role details', (t) => {
+  const root = sandbox(t);
+  const { source, adapter } = fixture();
+  publish(root, render(source, lock, adapter), lock);
+  const after = new Map(source);
+  after.set('pstack/skills/new/SKILL.md', entry(skill('new')));
+  after.set('pstack/skills/setup-pstack/SKILL.md', entry(skill('setup-pstack', '# pstack model configuration\nnew role: auto\n```')));
+  const report = prepareCandidate(root, source, after, { ...lock, commit: 'b'.repeat(40) }, adapter);
+  assert.equal(report.changed, true);
+  assert.ok(existsSync(join(root, 'generated/skills/new/SKILL.md')));
+  assert.match(formatReport(report), /Model roles changed/);
+  assert.match(formatReport(report), /skills\/new\/SKILL.md/);
+});
+
+test('daily check reports blocked adaptation while preserving published inputs', (t) => {
+  const root = sandbox(t);
+  const { source, adapter } = fixture();
+  publish(root, render(source, lock, adapter), lock);
+  const oldTree = treeId(readTree(join(root, 'generated')));
+  const after = new Map(source);
+  after.set(GENERATOR, entry('changed upstream generator'));
+  assert.throws(() => prepareCandidate(root, source, after, { ...lock, commit: 'b'.repeat(40) }, adapter), /Review required/);
+  const report = JSON.parse(readFileSync(join(root, '.cache/update-report.json')));
+  assert.equal(report.validation.passed, false);
+  assert.match(formatReport(report), /Generation requires review/);
+  assert.equal(treeId(readTree(join(root, 'generated'))), oldTree);
+  assert.equal(JSON.parse(readFileSync(join(root, 'upstream.lock.json'))).commit, lock.commit);
 });
 
 test('update report identifies high-impact content, new requirements, and changed roles', () => {

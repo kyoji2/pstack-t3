@@ -46,6 +46,16 @@ Add `--online` to fetch the latest `main` and compare relevant upstream files. A
 node bin/sync-pstack-t3.mjs status --online
 ```
 
+## Daily upstream checks
+
+[Check upstream pstack](../.github/workflows/update-upstream.yml) runs daily at 01:23 UTC, or 09:23 in China. GitHub may delay scheduled runs. You can also select **Run workflow** from its Actions page.
+
+The workflow skips commits that do not change the tracked pstack files. Relevant changes run generation, tests, and the generated-tree check. Successful candidates create or update a pull request on `automation/update-pstack`. The workflow never merges the PR or installs skills locally.
+
+A source change that needs adapter review fails the run and leaves the current lock and tree unchanged. The run summary shows the diagnostic. The `upstream-update-report` artifact retains the JSON report and Markdown summary for 30 days. Network and test failures also fail the run.
+
+The workflow uses the repository's `GITHUB_TOKEN`. Repository settings must allow GitHub Actions to create pull requests. PRs created with this token do not trigger another workflow run. Candidate tests run in the update workflow before PR creation, and the validation workflow runs again after merge.
+
 ## Prepare an update
 
 Update the lock and generated tree:

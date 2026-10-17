@@ -1,0 +1,62 @@
+name: Check upstream pstack
+
+on:
+  schedule:
+    - cron: '23 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: upstream-pstack-update
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Check and generate candidate
+        id: candidate
+        run: node scripts/prepare-update.mjs
+      - name: Test candidate
+        if: steps.candidate.outputs.changed == 'true'
+        run: npm test
+      - name: Check generated candidate
+        if: steps.candidate.outputs.changed == 'true'
+        run: npm run check
+      - name: Record candidate validation
+        if: steps.candidate.outputs.changed == 'true'
+        run: |
+          printf '\nValidation passed with Node.js 24 on Linux: `npm test` and `npm run check`.\n' >> .cache/update-report.md
+      - name: Create or update pull request
+        if: steps.candidate.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7
+        with:
+          branch: automation/update-pstack
+          base: main
+          title: 'chore: update upstream pstack'
+          commit-message: 'chore: update upstream pstack'
+          body-path: .cache/update-report.md
+          add-paths: |
+            upstream.lock.json
+            generated/
+      - name: Retain update report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: upstream-update-report
+          path: |
+            .cache/update-report.json
+            .cache/update-report.md
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 30

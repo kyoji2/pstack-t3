@@ -20,6 +20,8 @@ node bin/sync-pstack-t3.mjs install
 
 The installer checks conflicts before changing skill links and preserves unrelated skills.
 
+[The daily upstream check](.github/workflows/update-upstream.yml) runs at 01:23 UTC, or 09:23 in China. Relevant updates generate a tested pull request on `automation/update-pstack`. Changes that require adaptation review stop generation and retain a report. The workflow also supports manual dispatch.
+
 See [Install and update pstack-t3](docs/usage.md) for updates, temporary installations, rollback, and recovery.
 
 ## Design documents
