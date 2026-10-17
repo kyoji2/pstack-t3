@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "reviewedSources": {
+    "scripts/generate-pstack-harness-trees.mjs": "b0af3a2b5abf98f5a2e02a49bef3e5683673870ea930961a4bf4167a32894c44",
+    "pstack/docs/harness/claude-code.md": "cbf1dc0dfb4a4e3c254eb5362bfb1c9db04517a4b4eec1b3315973f5bbd8325a"
+  },
+  "overrides": {
+    "skills/setup-pstack/SKILL.md": "d61b47256a18155a81c8e5ef95e3cc6569ce8c18317c35c4dd9c8015cf68cb59",
+    "skills/make-bot-ui/SKILL.md": "3624c8ef16cf2e48deb2a4049e72c6962a9431c8d6c6af90e7bd7ea0375224ec"
+  },
+  "linkPlaceholders": [
+    { "path": "skills/why/references/synthesizer-prompt.md", "href": "url" }
+  ],
+  "aliases": {
+    "p3-mode": "poteto-mode",
+    "p3-help": "poteto-help",
+    "setup-p3": "setup-pstack"
+  },
+  "highImpact": [
+    "^scripts/generate-pstack-harness-trees\\.mjs$",
+    "^pstack/docs/harness/",
+    "^pstack/agents/",
+    "^pstack/skills/(setup-pstack|make-bot-ui|poteto-mode|arena|architect|interrogate|swarm|recall|automate-me)/"
+  ],
+  "requirements": [
+    { "id": "task", "pattern": "`Task`|\\bTask (tool|subagent|call)" },
+    { "id": "question", "pattern": "AskQuestion" },
+    { "id": "todo", "pattern": "\\btodo ?list\\b", "flags": "i" },
+    { "id": "routing", "pattern": "skill|`/[a-z]" },
+    { "id": "agent", "pattern": "generalPurpose|poteto-agent|comment-sicko" },
+    { "id": "readonly", "pattern": "readonly: (true|false)|readonly/Ask" },
+    { "id": "environment", "pattern": "environment: \"(cloud|local)\"" },
+    { "id": "baseline", "pattern": "cloud_base_branch" },
+    { "id": "background", "pattern": "run_in_background" },
+    { "id": "resume", "pattern": "\\bresume\\b", "flags": "i" },
+    { "id": "attachments", "pattern": "file_attachments" },
+    { "id": "models", "pattern": "\\b(claude-[a-z]+-\\d|grok-\\d|gpt-\\d)|inherit-parent" },
+    { "id": "modelconfig", "pattern": "pstack-models\\.mdc" },
+    { "id": "skills-path", "pattern": "\\.cursor/skills" },
+    { "id": "plugins-path", "pattern": "\\.cursor/plugins|\\.cursor-plugin" },
+    { "id": "rules-path", "pattern": "\\.cursor/rules|always-applied rule" },
+    { "id": "transcripts", "pattern": "agent-transcripts|\\.cursor/projects" },
+    { "id": "cursor-features", "pattern": "Bugbot|Cursor [Aa]utomation|cursor\\.(sh|com)/automations|[Cc]loud [Aa]gent" },
+    { "id": "loop", "pattern": "/loop|loop skill" },
+    { "id": "watch", "pattern": "watch-pr" },
+    { "id": "store", "pattern": "agent.s store|scripts/orch/|store path" },
+    { "id": "control", "pattern": "cursor-team-kit|control-ui|control-cli" },
+    { "id": "platform", "pattern": "Cursor" }
+  ]
+}

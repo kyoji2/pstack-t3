@@ -16,7 +16,9 @@ A tool-name substitution cannot express every difference. A Cursor cloud worker 
 
 The adapter records those distinctions once. Every generated skill entry point tells the agent to read it, including skills whose platform requirements appear only in a linked playbook.
 
-Some workflows need a replacement document. The first is `setup-pstack`, which writes a Cursor rule file. Its T3 replacement reads the live model catalog and writes a role configuration that the skills load explicitly. Each replacement has a recorded upstream source hash. A change to that source requires review before the generator accepts the replacement again.
+Some workflows need a replacement document. `setup-pstack` writes a Cursor rule file. Its T3 replacement reads the live model catalog and writes a role configuration that the skills load explicitly. `make-bot-ui` depends on Cursor webhook and credential interfaces, so its replacement uses T3 scheduled-task webhooks and private secret entry.
+
+Each replacement has a recorded upstream source hash. A change to that source requires review before the generator accepts the replacement again.
 
 ## Names and model choices
 
@@ -28,7 +30,7 @@ Model choices belong to the user. The proposed configuration is `pstack-models.m
 
 The lock file identifies an exact commit in `cursor/plugins`. An update can resolve `main`, but generation always uses the resulting commit. Links to omitted upstream documents use that same commit, so the linked instructions match the installed version.
 
-The source checkout stays in an ignored cache. The generated tree is committed. This adds generated files to the repository, but lets a reviewer inspect the instructions that agents will receive without running the generator.
+The source objects stay in an ignored cache. The generated tree is committed. This adds generated files to the repository, but lets a reviewer inspect the instructions that agents will receive without running the generator.
 
 An update report separates content changes from adaptation work. It lists changed skills, changed platform requirements, model-role changes, and replacement files that need review. It also flags changes to documents about delegation, isolation, scheduling, and PR watching.
 

@@ -3,3 +3,7 @@
 node_modules/
 coverage/
 *.log
+.candidate/
+.previous-generated/
+.publication.json
+pstack-models.md

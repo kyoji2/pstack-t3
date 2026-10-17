@@ -1,10 +1,10 @@
 # Implementation specification
 
-This document specifies the proposed implementation. The files, commands, and behaviors below do not exist yet.
+This document specifies the generator, update workflow, and managed installation. See [Install and update pstack-t3](usage.md) for commands.
 
 ## Repository layout
 
-The proposed layout separates source tracking, adaptation, generation, and installation.
+The main project files separate source tracking, adaptation, generation, and installation.
 
 ```text
 upstream.lock.json
@@ -12,9 +12,14 @@ adapter/
 	t3.md
 	rules.json
 overrides/
-	setup-pstack/
-		SKILL.md
+	skills/
+		setup-pstack/SKILL.md
+		make-bot-ui/SKILL.md
+bin/
+	sync-pstack-t3.mjs
 scripts/
+	files.mjs
+	source.mjs
 	sync-upstream.mjs
 	generate-t3-tree.mjs
 	install.mjs
@@ -45,10 +50,10 @@ The generator has the following requirements:
 - Copy upstream agent documents and the upstream license.
 - Preserve executable permissions on copied files.
 - Scan Markdown files, including playbooks and references, for platform-specific concepts.
-- Add a T3 adapter instruction to every skill entry point without changing its frontmatter. Repeated generation adds the instruction once.
+- Add a T3 adapter instruction to every skill entry point. Preserve its frontmatter except for normalizing a display name to its matching directory slug. Record the original name in provenance. Repeated generation adds the instruction once.
 - Apply declared replacement files after validating their reviewed upstream hashes. A changed upstream file blocks its replacement until review updates the recorded hash.
 - Keep relative links when their targets exist in the generated tree. Convert links to omitted upstream documents into GitHub URLs at the locked commit.
-- Validate file targets, directory targets, query strings, fragments, and source-root boundaries. Report unresolved local targets.
+- Validate local file targets, directory targets, and source-root boundaries. Preserve query strings and fragments. Remote targets and heading anchors are not fetched or checked. Report unresolved local targets except declared template placeholders in `adapter/rules.json`.
 - Produce the same bytes and executable permissions for the same inputs.
 
 `provenance.json` records the upstream commit, generator format version, adapter hashes, replacement hashes, and each file's origin. It excludes timestamps, absolute paths, and machine details.
@@ -93,17 +98,20 @@ Changes to upstream roles appear in the update report. User model files remain o
 
 ## Command interface
 
-The proposed executable is `sync-pstack-t3`.
+The `sync-pstack-t3` executable lives in `bin/sync-pstack-t3.mjs`.
 
 | Command | Result |
 | --- | --- |
-| `status` | Report the locked and installed versions. When online, report whether relevant upstream content changed. Distinguish network failures from an unchanged source. |
+| `fetch` | Cache the exact locked upstream commit without changing the lock or generated tree. |
+| `generate` | Generate the tree from the cached locked source. |
+| `status` | Report the locked and installed versions. With `--online`, fetch a reference and report relevant source changes. Distinguish network failures from an unchanged source. |
 | `update --ref main` | Resolve the reference, compare sources, generate a candidate tree, and report changes. Publish the lock and tree after validation passes. Leave the installed version unchanged. |
 | `generate --check` | Compare expected output with the generated tree, including stale files and executable permissions. Write no files. |
 | `install` | Install a validated version and record the managed links and previous targets. |
 | `rollback` | Restore the previous installation after checking for changes to managed paths. |
+| `recover` | Restore the links and manifest from an interrupted installation journal after checking for unrelated changes. |
 
-A failed update leaves the previous lock and generated tree usable.
+A failed validation leaves the previous lock and generated tree usable. Publication rolls back ordinary I/O failures. A process interruption leaves a publication journal that `recover --publication` uses to restore the previous tree and lock, or finish cleanup of a committed update. The [recovery procedure](usage.md#recover-an-interrupted-operation) describes both repository and installation recovery.
 
 ## Update report
 
@@ -115,19 +123,19 @@ The report includes the following changes:
 - Changes to designated documents about delegation, isolation, models, scheduling, watching, and installation.
 - Changed upstream files whose local replacements require review.
 
-Unknown platform requirements produce diagnostics. Term detection does not establish compatibility for arbitrary changes to prose.
+A detected requirement without an adapter mapping blocks generation. The detector cannot identify every new requirement in prose, so source changes still need review.
 
 ## Installation state
 
 The initial default target is `~/.agents/skills`. The installer also accepts an explicit target directory. Support for other hosts requires a discovery test.
 
-The installation manifest lives outside the generated tree and tracked repository files. It records the installed version, managed link paths, and previous targets.
+The installation manifest lives outside the generated tree and tracked repository files. It records the installed version, managed link paths, and previous targets. The installer resolves existing directory aliases before checking that the target and state directory are separate.
 
 The installer has the following requirements:
 
 - Install from an immutable local version directory.
 - Preserve the complete tree because skills refer to sibling skills, agent documents, and the adapter.
-- Validate all destination conflicts before changing links.
+- Validate all destination conflicts before changing links. Install, rollback, and recovery share a lock in the canonical target directory, independent of `--state-dir`.
 - Refuse to overwrite unmanaged files, directories, or links.
 - During explicit p3 migration, identify old links by their resolved source ownership.
 - Remove a retired link only when it still matches a previously managed link.
@@ -141,12 +149,12 @@ The migration retains the old p3-stack checkout and unrelated installed skills.
 Automated tests cover the following behavior:
 
 1. Identical locked inputs produce identical output. `generate --check` detects content, file-set, and permission changes without writes.
-2. The tree includes all skills and required references. Adapter injection preserves valid frontmatter and executable permissions.
+2. The tree includes all skills and required references. Adapter injection preserves frontmatter fields except the documented name normalization and retains executable permissions.
 3. Links to omitted documents use the locked commit. Invalid source paths and paths outside the source root fail validation.
 4. New detected platform requirements and changed replacement baselines produce actionable errors.
 5. Failed updates preserve the previous lock and generated tree.
 6. Installation refuses unmanaged collisions and removes only retired managed links. Rollback restores the previous installation without overwriting changed paths.
-7. Model configuration validation reports unavailable targets and changed role definitions.
+7. The setup skill checks model targets and option values against the live catalog. Tests verify its role list against upstream. Model choices and tool execution require runtime observation.
 
 Runtime validation uses a temporary installation before the real installation changes. Representative runs cover model selection, a child in an isolated worktree, a fresh review round, skill routing, and PR-watch handling.
 

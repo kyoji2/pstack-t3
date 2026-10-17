@@ -1,0 +1,2 @@
+# Preserve upstream whitespace in generated copies.
+generated/** -whitespace
