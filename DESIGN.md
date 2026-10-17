@@ -1,157 +1,51 @@
 # Design
 
-## Goal
+## Why generate the T3 version
 
-Replace a separately rewritten p3-stack installation with a generated T3 Code adaptation of official pstack. Make upstream updates easy to identify, review, reproduce, install, and roll back.
+p3-stack adapts pstack by rewriting its skills for T3 Code. Those edits include tool names, model selection, delegation, and entry-point names. When upstream changes a skill, the maintainer must separate the upstream change from the T3 rewrite.
 
-Keep this project in its own public repository. Do not depend on a dotfiles checkout or embed machine-specific paths, local model catalogs, or user settings.
+pstack-t3 moves the shared T3 behavior into one adapter document. A generator copies the official skills and adds an instruction to read that adapter. Most upstream files then reach the generated tree without changes to their bodies.
 
-## Source and ownership
+The official [Claude Code generator](https://github.com/cursor/plugins/blob/09d06eb4b97a1020ab31e84030e38baf1099c7dc/scripts/generate-pstack-harness-trees.mjs) uses this approach. It copies skills and agents, adds adapter instructions, repairs links, and checks the result for drift. pstack-t3 extends that design with a pinned source commit, reports of source changes, and managed installation.
 
-The source of truth is `https://github.com/cursor/plugins`, specifically `pstack/` and the upstream harness generator. Fetch an exact commit recorded in `upstream.lock.json`. An update may resolve a moving reference such as `main`, but generation uses the resolved commit only.
+## The boundary between upstream and T3
 
-Do not execute upstream scripts during synchronization or generation. Copy selected runtime assets as data, preserving executable permissions and the upstream license. Reject source symlinks or paths that escape the source root.
+Upstream owns the skills, playbooks, principles, and agent documents. The T3 adapter defines how an agent executes platform-specific instructions. Current session instructions and tool contracts take precedence over both.
 
-Keep source checkouts in an ignored local cache. Commit generated output for review. Generation must work offline once the locked source is available.
+A tool-name substitution cannot express every difference. A Cursor cloud worker maps to an isolated T3 child task, but an independent top-level conversation requires a separate user request. Model names must come from T3's live catalog. A later review round needs a new task with the earlier findings in its brief.
 
-## Planned layout
+The adapter records those distinctions once. Every generated skill entry point tells the agent to read it, including skills whose platform requirements appear only in a linked playbook.
 
-```text
-upstream.lock.json
-adapter/
-  t3.md
-  rules.json
-overrides/
-  setup-pstack/
-    SKILL.md
-scripts/
-  sync-upstream.mjs
-  generate-t3-tree.mjs
-  install.mjs
-generated/
-  skills/
-  agents/
-  docs/harness/t3.md
-  LICENSE
-  provenance.json
-tests/
-```
+Some workflows need a replacement document. The first is `setup-pstack`, which writes a Cursor rule file. Its T3 replacement reads the live model catalog and writes a role configuration that the skills load explicitly. Each replacement has a recorded upstream source hash. A change to that source requires review before the generator accepts the replacement again.
 
-Use Node.js and built-in modules for the initial implementation. Avoid an upstream fork and avoid adding a package dependency solely for file copying or command-line parsing.
+## Names and model choices
 
-## Generator
+Canonical skill names stay aligned with upstream, including `poteto-mode`, `poteto-help`, and `setup-pstack`. Renaming every reference would create more differences to maintain. Thin aliases can preserve the old p3 entry points during migration.
 
-1. Validate the locked source and expected upstream layout.
-2. Discover skills containing `SKILL.md`; copy each complete skill directory, agent documents, and the license.
-3. Scan Markdown, including playbooks and references, for platform-specific concepts.
-4. Inject a T3 adapter instruction into every skill entry point. Keep frontmatter valid and make injection idempotent. The adapter governs platform execution; upstream skills govern workflow, subject to session instructions and actual tool contracts.
-5. Apply declared overrides. Record each overridden source file and its reviewed source hash. Fail when an overridden upstream file changes until the override is reviewed and its baseline explicitly updated.
-6. Keep links within the generated tree when the target is included. Rewrite links to omitted upstream documents to GitHub URLs pinned to the locked commit. Validate file and directory targets, root boundaries, query strings, and fragments. Report unresolved local targets.
-7. Write deterministic provenance containing the upstream commit, generator format version, adapter and override hashes, and per-file source attribution. Do not include timestamps, absolute paths, or local machine details.
-8. Build in a staging directory and publish only after validation succeeds. `--check` compares the expected tree with disk, including stale files and executable permissions, without modifying output.
+Model choices belong to the user. The proposed configuration is `pstack-models.md`, with a project file taking precedence over the global file. A one-time import can preserve valid choices from `p3-models.md`. Neither file belongs in this public repository.
 
-Do not copy Claude Code manifests and assume they represent T3 packaging. The initial installation target is a skill directory tree, not an unverified T3 plugin format.
+## Updates need a fixed source and a reviewable result
 
-## T3 adapter
+The lock file identifies an exact commit in `cursor/plugins`. An update can resolve `main`, but generation always uses the resulting commit. Links to omitted upstream documents use that same commit, so the linked instructions match the installed version.
 
-The adapter must express behavior, not merely rename tools.
+The source checkout stays in an ignored cache. The generated tree is committed. This adds generated files to the repository, but lets a reviewer inspect the instructions that agents will receive without running the generator.
 
-| Upstream concept | T3 behavior |
-| --- | --- |
-| `Task` | Use the appropriate available delegation tool; use `delegate_task` for T3-owned children and models unsupported by native tools. |
-| Available models | Resolve provider instances, model identifiers, and supported options through `orchestrator_capabilities`. Never infer T3 identifiers from Cursor slugs. |
-| Background work | Prefer async delegation and completion notifications. Read task status when a result is needed during the current turn. Do not poll continuously. |
-| Agent types | Put the relevant generated agent document path and a requirement to read it in the child brief. |
-| Read-only work | Explicitly prohibit edits in the brief and verify the resulting state. Permission modes are not a read-only switch. |
-| Cloud isolation | Use `delegate_task` with `isolation: "worktree"` for an isolated child. It starts from the parent local commit; uncommitted edits are not copied. |
-| Branch baseline | Handle `cloud_base_branch` explicitly. Do not silently drop a baseline the delegation API cannot express. |
-| Top-level threads | Use `t3_thread_launch` only when the user requests separate top-level conversations. Bind the workspace in the launch request. |
-| Independent review rounds | Create a new delegated task with the original brief, previous findings, responses, and unresolved objections; use a distinct request ID per round. |
-| Stateful follow-ups | Use child conversation follow-up only when it requires existing child state and is compatible with the current tool contract. |
-| PR watching | Use `watch_pull_request` and its notification lifecycle. |
-| Persistent recurring work | Use `schedule_task` with a structured schedule when the user requests recurring work. Preserve the distinction from a single autonomous run. |
-| Transcript inspection | Use `t3_thread_search` and `t3_thread_read`, scoped to the relevant project. |
-| Skill routing | Read the generated target `SKILL.md` directly when the host cannot invoke it through a skill tool. |
-| Browser/device evidence | Use the tools available to the host, including T3 preview/device tools when exposed. Report missing capabilities explicitly. |
+An update report separates content changes from adaptation work. It lists changed skills, changed platform requirements, model-role changes, and replacement files that need review. It also flags changes to documents about delegation, isolation, scheduling, and PR watching.
 
-Preserve `poteto-mode`, `poteto-help`, and `setup-pstack` as canonical upstream names. Optional thin aliases may retain `p3-mode`, `p3-help`, and `setup-p3` during migration. Alias frontmatter must use the alias name and route to the canonical skill without duplicating its body.
+Term detection has a limit. It can identify a new tool name, but it cannot prove that a rewritten paragraph preserves the same behavior. Changes to those documents still need human review and representative T3 runs.
 
-## Model configuration
+## Installation is separate from updates
 
-Override `setup-pstack`, whose Cursor rule-writing workflow does not map directly to T3.
+Updating the repository prepares a candidate version. Installation changes which version the local agent reads. Keeping those actions separate allows review before an update affects active work.
 
-Use project `pstack-models.md`, falling back to `~/.agents/pstack-models.md`. Read configuration explicitly rather than assuming the host automatically loads it. Resolve configured provider/model/options against the live capability catalog. Omitted targets inherit the parent where supported. Keep panel cardinality and model diversity intentional; do not silently collapse an explicit cross-model panel to the same model.
+The installer uses an immutable local version directory and records the links it manages. It checks all destination conflicts before changing links. During p3 migration, it replaces links only when their resolved targets belong to the old installation.
 
-Offer a one-time import of existing `p3-models.md` with validation. Preserve user choices and report unknown or retired roles. User model configuration is not committed to this public repository.
+Rollback restores the recorded previous links. If another process has changed a managed path, rollback reports the conflict instead of overwriting it. The old p3-stack checkout remains available during migration.
 
-Track upstream role changes so additions and removals are visible rather than hidden behind the override.
+## Initial scope
 
-## Update workflow
+The first release covers source locking, generation, update reports, the setup replacement, compatibility aliases, installation, and rollback. Validation includes temporary installations and representative T3 workflows before the real installation changes.
 
-Planned command interface:
+Scheduled update checks and automatic update PRs come later. The first implementation needs to produce useful reports and preserve a working installation when an update fails.
 
-```sh
-sync-pstack-t3 status
-sync-pstack-t3 update --ref main
-sync-pstack-t3 generate --check
-sync-pstack-t3 install
-sync-pstack-t3 rollback
-```
-
-These commands are proposed, not implemented yet.
-
-`status` reports the locked and installed versions and, when online, whether relevant upstream content changed. Network failures must be distinguishable from an up-to-date result.
-
-`update` resolves a candidate reference, compares it with the locked source, generates a candidate tree, and reports:
-
-- Added, removed, and modified skills, playbooks, references, and scripts.
-- Changes to the upstream generator's detection rules and harness adapter.
-- New platform terms and changes to model roles.
-- Changes in declared high-impact documents covering delegation, isolation, models, scheduling, watching, and installation.
-- Override baseline conflicts requiring review.
-
-Only publish the candidate lock and generated tree after required checks pass. Updating repository artifacts does not install them. A failed update preserves the prior usable tree.
-
-Known-term coverage is a guardrail, not proof of semantic compatibility. High-impact natural-language changes remain review items. Unknown requirements must produce a useful diagnostic instead of silently selecting a fallback.
-
-Start with manual updates and local checks. Add scheduled upstream checks or update PR automation after the report and validation behavior is proven. Do not auto-install upstream changes.
-
-## Installation and migration
-
-Support an explicit skills target directory, with `~/.agents/skills` as the initial default. Test host discovery before describing other harnesses as supported.
-
-Keep a local installation manifest recording source release, managed link paths, and previous targets. It must live outside the generated tree and public tracked files.
-
-- Refuse to overwrite unmanaged files, directories, or links.
-- During explicit p3 migration, identify old links by their resolved source ownership, not just their names.
-- Validate all collisions before changing any link.
-- Install from an immutable local version directory so changing a development checkout cannot silently change installed skills.
-- Preserve the complete tree layout because skills link to sibling skills, agents, and adapter documents.
-- Remove retired entries only if they still match a previously managed link.
-- Record enough state to restore the previous version and original p3 links.
-- Detect local modifications or replaced links before rollback; do not overwrite them.
-
-The old p3-stack checkout is retained during migration. Unrelated skills remain installed.
-
-## Acceptance criteria
-
-Automated checks should cover meaningful behavior:
-
-1. Identical locked inputs produce identical output, and `--check` detects content, file-set, and permission drift without writes.
-2. All skills and required references are included; injected instructions preserve valid frontmatter and executable assets retain their mode.
-3. Links to omitted documents use the locked commit; invalid or escaping source paths are rejected.
-4. Newly introduced detected platform requirements and changed override baselines fail with actionable diagnostics.
-5. Failed updates leave the previous lock and generated tree usable.
-6. Installation refuses unmanaged collisions, handles retired managed entries, and restores the previous installation on rollback.
-7. Model configuration imports retain valid choices and report unavailable targets or changed role definitions.
-
-Before switching the real installation, exercise representative workflows in a temporary target: model selection, a worktree child, a fresh review round, cross-skill routing, and PR-watch handling. Separate prompt behavior observations from static file validation; generation alone cannot prove agents obey the adapter.
-
-## Delivery order
-
-1. Implement the lock, deterministic generator, adapter, and source-change report.
-2. Add the setup override and compatibility aliases with explicit drift checks.
-3. Validate fixture behavior and representative T3 workflows.
-4. Implement managed installation, migration, and rollback.
-5. Switch the local installation after validation.
-6. Add upstream update automation as a later enhancement.
+The [implementation specification](docs/implementation.md) defines the proposed behavior and acceptance criteria.
