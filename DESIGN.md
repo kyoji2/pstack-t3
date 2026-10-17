@@ -22,7 +22,7 @@ Some workflows need a replacement document. The first is `setup-pstack`, which w
 
 Canonical skill names stay aligned with upstream, including `poteto-mode`, `poteto-help`, and `setup-pstack`. Renaming every reference would create more differences to maintain. Thin aliases can preserve the old p3 entry points during migration.
 
-Model choices belong to the user. The proposed configuration is `pstack-models.md`, with a project file taking precedence over the global file. A one-time import can preserve valid choices from `p3-models.md`. Neither file belongs in this public repository.
+Model choices belong to the user. The proposed configuration is `pstack-models.md`, with a project file taking precedence over the global file. The setup workflow creates this configuration from the live T3 model catalog. User model files remain outside this public repository.
 
 ## Updates need a fixed source and a reviewable result
 

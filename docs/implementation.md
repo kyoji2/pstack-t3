@@ -89,7 +89,7 @@ The replacement `setup-pstack` reads `orchestrator_capabilities` and writes `pst
 
 Configured provider IDs, model IDs, and options must match the live catalog. An omitted target inherits the parent where the tool supports inheritance. Explicit panel sizes and model diversity remain part of the requested configuration. Unavailable choices produce a diagnostic rather than silently reducing a panel to one model.
 
-The import from `p3-models.md` preserves valid user choices and reports unknown or retired roles. Changes to upstream roles appear in the update report. User model files remain outside this repository.
+Changes to upstream roles appear in the update report. User model files remain outside this repository.
 
 ## Command interface
 
@@ -146,7 +146,7 @@ Automated tests cover the following behavior:
 4. New detected platform requirements and changed replacement baselines produce actionable errors.
 5. Failed updates preserve the previous lock and generated tree.
 6. Installation refuses unmanaged collisions and removes only retired managed links. Rollback restores the previous installation without overwriting changed paths.
-7. Model imports retain valid choices and report unavailable targets or changed role definitions.
+7. Model configuration validation reports unavailable targets and changed role definitions.
 
 Runtime validation uses a temporary installation before the real installation changes. Representative runs cover model selection, a child in an isolated worktree, a fresh review round, skill routing, and PR-watch handling.
 
