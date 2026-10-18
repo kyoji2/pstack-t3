@@ -4,11 +4,11 @@
     "version": 1,
     "repository": "https://github.com/cursor/plugins.git",
     "source": "pstack",
-    "commit": "09d06eb4b97a1020ab31e84030e38baf1099c7dc"
+    "commit": "bc1443790cc980d0ea857663260a831299884508"
   },
   "inputs": {
-    "adapter/rules.json": "08813fd9a43a8eff361304a8e27f3f7ae5f06984dade2f17bb93a36e8239a991",
-    "adapter/t3.md": "7ae7c659db943c2536842a80c2e767c8d0c5b27e7f17342ff7c4b35df6ef99e9"
+    "adapter/rules.json": "a835bd967ef5f961cf25bd1114f95d67b2f761e6a8358197f84c9ba8a377e268",
+    "adapter/t3.md": "b4af36771682b0512b471a6a2e49a189900212081332c1c1b029c03ca2d19dfc"
   },
   "requirements": {
     "task": [
@@ -207,6 +207,7 @@
       "pstack/skills/poteto-mode/playbooks/autopilot-full.md",
       "pstack/skills/poteto-mode/playbooks/babysit.md",
       "pstack/skills/poteto-mode/playbooks/multi-phase-plan.md",
+      "pstack/skills/poteto-mode/playbooks/opening-a-pr.md",
       "pstack/skills/poteto-mode/playbooks/orchestrate.md",
       "pstack/skills/poteto-mode/playbooks/shipping.md",
       "pstack/skills/poteto-mode/references/bugbot-triage.md",
@@ -304,7 +305,7 @@
     "docs/harness/t3.md": {
       "source": "adapter/t3.md",
       "transform": "copy",
-      "sha256": "7ae7c659db943c2536842a80c2e767c8d0c5b27e7f17342ff7c4b35df6ef99e9",
+      "sha256": "b4af36771682b0512b471a6a2e49a189900212081332c1c1b029c03ca2d19dfc",
       "executable": false
     },
     "skills/architect/SKILL.md": {
@@ -489,10 +490,10 @@
     },
     "skills/ketchup/SKILL.md": {
       "source": "pstack/skills/ketchup/SKILL.md",
-      "sourceHash": "47b3fb0d5626a40fcb3bd016e68f1cb3d2d313351183e8f6c05d4c7abd76e665",
+      "sourceHash": "f2923ffd14f6fc778f75a47aaed1f317fb5fd00b5701ca769d6446c74106dead",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "0e5ed1f146c9321c9e3c9584a65747ca2df457e88d7a4b9f46f9f79788d33f97",
+      "sha256": "b7e2aa73485a3ada3a45c26f5b7e147e8cf7d5cf64c5cfb693db9689594ab366",
       "executable": false
     },
     "skills/maintain-verification-skill/SKILL.md": {
@@ -506,7 +507,7 @@
     "skills/make-bot-ui/SKILL.md": {
       "source": "pstack/skills/make-bot-ui/SKILL.md",
       "override": "overrides/skills/make-bot-ui/SKILL.md",
-      "sourceHash": "3624c8ef16cf2e48deb2a4049e72c6962a9431c8d6c6af90e7bd7ea0375224ec",
+      "sourceHash": "ad19d0bc6764287ec08c2521701974e7dac941f72e4d0fe81a24f4614494586f",
       "overrideHash": "ea1c89fbe1d41413d9839402c8db4117515b641436e8eff8faea8dccbb526c9f",
       "transform": "override",
       "adapterInjected": true,
@@ -523,10 +524,10 @@
     },
     "skills/poteto-help/SKILL.md": {
       "source": "pstack/skills/poteto-help/SKILL.md",
-      "sourceHash": "1b0645c25200a19e5863583e117bad684b1b79ba8434823ebf4f6bbcc61e8a75",
+      "sourceHash": "be8f5a58067d8c5d03ab8bd3641e7329966bc3b97d91ec2f284e882eaf2296b8",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "c47c5af2bda02701aca40a4125afd238625a5fc3605db74269c504f4ef25266f",
+      "sha256": "52af7b98c973a67ffabcf7afca7c7a4c1d583cb7b2349107301dd1b6911db55d",
       "executable": false
     },
     "skills/poteto-help/references/prompting.md": {
@@ -545,10 +546,9 @@
     },
     "skills/poteto-mode/SKILL.md": {
       "source": "pstack/skills/poteto-mode/SKILL.md",
-      "sourceHash": "c5e6b605f46e5d9fbab31afa7a99d3d50680f2180d1fdfae3a924901bc52d99a",
+      "sourceHash": "2755f102e7a6d0496b429d1031a22fb353e1f3d523543367caeaae5c4ed6f544",
       "transform": "copy",
       "adapterInjected": true,
-      "originalFrontmatterName": "Poteto Mode",
       "sha256": "993e6a133653be7cc7d3ca160053e0aa17b014021b7cbba66c1791284daa38ac",
       "executable": false
     },
@@ -1177,17 +1177,17 @@
     },
     "skills/typescript-best-practices/SKILL.md": {
       "source": "pstack/skills/typescript-best-practices/SKILL.md",
-      "sourceHash": "28f9e61710e205f6f3c5476f333483cff0e988f6a5b639e2faad536344b40c5e",
+      "sourceHash": "ec1dac086d3708e5940d45d250c30a37dd953b4e3cb2ca0692f5851d7a039e27",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "86516f2480a93be363855f1b51c87920394cd54c662349da716d4c61a324f7e4",
+      "sha256": "5be34eac307e263c07f0c61397c2dd31cdcb72a0b7c363accb2ac288ecd2716b",
       "executable": false
     },
     "skills/typescript-best-practices/references/patterns.md": {
       "source": "pstack/skills/typescript-best-practices/references/patterns.md",
-      "sourceHash": "faa1362055374452efccac1b629677c61acfb0bcc6c4e3311836b5715638ee18",
+      "sourceHash": "12e70c9419a8b3f5d6a1ab80e272c1f00a43ac0b3bbf72d68199033570e5de77",
       "transform": "copy",
-      "sha256": "faa1362055374452efccac1b629677c61acfb0bcc6c4e3311836b5715638ee18",
+      "sha256": "12e70c9419a8b3f5d6a1ab80e272c1f00a43ac0b3bbf72d68199033570e5de77",
       "executable": false
     },
     "skills/unslop/SKILL.md": {
