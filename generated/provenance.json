@@ -7,7 +7,7 @@
     "commit": "bc1443790cc980d0ea857663260a831299884508"
   },
   "inputs": {
-    "adapter/SKILL.md": "5b9518a5ccee4e265d2080a7cfa0c8f04816844425ecca9fb1ab3a6bb75763f5",
+    "adapter/SKILL.md": "8de9e13bd7274aa60cad68cd40867d3048e60ceee96ce803c473acd9fe74c75f",
     "adapter/rules.json": "57425d77360aeda15a8e6c1078633ff551ed27df3d540fb2bb586823b0181423"
   },
   "requirements": {
@@ -1049,7 +1049,7 @@
     "skills/pstack-t3-adapter/SKILL.md": {
       "source": "adapter/SKILL.md",
       "transform": "copy",
-      "sha256": "5b9518a5ccee4e265d2080a7cfa0c8f04816844425ecca9fb1ab3a6bb75763f5",
+      "sha256": "8de9e13bd7274aa60cad68cd40867d3048e60ceee96ce803c473acd9fe74c75f",
       "executable": false
     },
     "skills/pstack-t3-adapter/agents/comment-sicko.md": {
