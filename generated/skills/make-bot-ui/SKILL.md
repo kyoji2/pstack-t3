@@ -5,7 +5,7 @@ disable-model-invocation: true
 ---
 
 <!-- pstack-t3 adapter -->
-Before following this skill in T3 Code, read [the T3 adapter](../../docs/harness/t3.md). Its platform mappings apply to this skill and its linked files.
+Before following this skill, read [the T3 adapter](../pstack-t3-adapter/SKILL.md). Its platform mappings apply to this skill and its linked files. If you cannot read it, stop and tell the user.
 
 # Build a UI for a T3 webhook
 
@@ -35,4 +35,4 @@ Use the application's existing deployment or preview setup. Exposing the UI to a
 
 Exercise a harmless action through the real page and server. Confirm the corresponding T3 event and the thread's result. If credentials or remote access are missing, report the blocked step and the code checks that passed.
 
-Report the implemented actions and the scheduled task ID. Keep sensitive endpoint URLs out of public artifacts. If the webhook is temporary, delete the scheduled task after verification. The [T3 adapter](../../docs/harness/t3.md) defines the platform mappings.
+Report the implemented actions and the scheduled task ID. Keep sensitive endpoint URLs out of public artifacts. If the webhook is temporary, delete the scheduled task after verification. The [T3 adapter](../pstack-t3-adapter/SKILL.md) defines the platform mappings.

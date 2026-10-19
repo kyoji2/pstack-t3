@@ -1,6 +1,36 @@
+---
+name: pstack-t3-adapter
+description: Platform mappings that every pstack skill reads first. Maps Cursor tools, models, paths, and agents to T3 Code and to hosts without T3. Not invoked directly.
+disable-model-invocation: true
+---
+
 # pstack in T3 Code
 
-Read this adapter before a pstack skill and apply it to every linked playbook, reference, and agent brief. `<pstack>` means the installed directory containing `skills/`, `agents/`, and this document.
+Read this adapter before a pstack skill and apply it to every linked playbook, reference, and agent brief. If a skill points here and you cannot read this file, stop and tell the user. Do not continue without it.
+
+## Paths
+
+This skill lives beside the pstack skills. Resolve every path from the skill path the host reported, without following symlinks to a real directory.
+
+- A sibling skill is `../<name>/SKILL.md`. Upstream text that names `<pstack>/skills/<name>/SKILL.md` means that path.
+- An upstream agent document `agents/<name>.md` is `agents/<name>.md` beside this file.
+- A skill's bundled scripts, playbooks, and references stay relative to that skill's directory.
+
+Do not search the disk or the network for a file that these rules locate.
+
+## Detect T3 Code
+
+You are in T3 Code when the session instructions say so, or when `delegate_task` or `orchestrator_capabilities` is callable. The host being pi, Claude, or Codex does not decide this, because T3 can run any of them. `T3_MCP_URL` in the environment is a weak hint. Check only that it is set and never print it, because related variables hold credentials.
+
+Outside T3 Code, the routing, path, model, and Cursor-plugin mappings below still apply. Change these things:
+
+- Treat T3 tool names (`delegate_task`, `orchestrator_capabilities`, `schedule_task`, `watch_pull_request`, `link_pull_request`, `preview_*`, `device_*`) as unavailable.
+- Cursor `Task` means the host's own subagent tool. If there is none, do the work in this session and report that independent review did not happen.
+- Read the agent documents under `agents/` and follow them in this session when a worker cannot be spawned.
+- Models cannot come from a T3 catalog. Inherit the host model unless `pstack-models.md` names a target the host accepts.
+- Report a mapped step that needs T3 as blocked. Do not emulate it.
+
+## Scope
 
 This document maps platform behavior. The skill supplies the workflow. Session instructions, user authorization, and actual tool schemas take precedence. Never send a field that the chosen tool rejects. Never infer permission to send external messages, merge, deploy, delete data, or create recurring work from an upstream autonomy paragraph.
 
@@ -16,14 +46,14 @@ Cursor `Task` means delegated work. Discover T3 tools when they are not loaded y
 A todolist uses the host's plan tool when available. Otherwise maintain the steps in a concise local task note or the reply. Do not claim a tool exists because the upstream skill names it.
 
 <!-- covers:routing -->
-To run another pstack skill, read `<pstack>/skills/<name>/SKILL.md` and follow it. This also applies to bare skill names and `/name` commands. Do not assume Cursor's command namespace or custom-mode shortcuts exist. State the actual entry point supported by the host.
+To run another pstack skill, read `../<name>/SKILL.md` and follow it. This also applies to bare skill names and `/name` commands. Do not assume Cursor's command namespace or custom-mode shortcuts exist. State the actual entry point supported by the host.
 
 `Grep` and `Glob` map to the host's search tools or shell `rg` and `rg --files`. File reads use the host's read tool. `/create-skill` means author a skill in the supported skills directory and validate its frontmatter and links.
 
 ## Delegation
 
 <!-- covers:agent -->
-`subagent_type: generalPurpose` means a general worker with the required tool access. `poteto-agent` and `comment-sicko` are instructions in `<pstack>/agents/<name>.md`, not registered T3 agent types. Begin the worker brief with the document path and a requirement to read it. Include the T3 adapter path as well.
+`subagent_type: generalPurpose` means a general worker with the required tool access. `poteto-agent` and `comment-sicko` are instructions in [agents/poteto-agent.md](agents/poteto-agent.md) and [agents/comment-sicko.md](agents/comment-sicko.md), not registered T3 agent types. Begin the worker brief with the document's absolute path and a requirement to read it. A child does not share your working directory, so never pass a relative path. Include this adapter's absolute path as well.
 
 <!-- covers:readonly -->
 `readonly: true` means the brief prohibits file edits, commits, and other state changes. Verify the resulting checkout state. `readonly: false` means normal task permissions. T3 runtime modes are approval policies, not a read-only switch. Leave `runtimeMode` unset unless the user requests a supervised child.
@@ -57,7 +87,7 @@ A follow-up that requires a child's existing process or uncommitted state may us
 Cursor model slugs such as `claude-*`, `grok-*`, and `gpt-*` do not identify T3 targets. Resolve provider instance IDs, exact model IDs, and supported options through `orchestrator_capabilities`. Preserve model IDs containing slashes. Do not split a combined provider/model string or guess an effort option from a slug.
 
 <!-- covers:modelconfig -->
-Read project-root `pstack-models.md` if present. Otherwise read `~/.agents/pstack-models.md`. The file contains the JSON configuration described by [setup-pstack](../../skills/setup-pstack/SKILL.md). No `.mdc` rule is loaded.
+Read project-root `pstack-models.md` if present. Otherwise read `~/.agents/pstack-models.md`. The file contains the JSON configuration described by [setup-pstack](../setup-pstack/SKILL.md). No `.mdc` rule is loaded.
 
 A role entry is `"inherit-parent"` or an object with `providerInstanceId`, `model`, and optional `options`. Validate targets and each option against the live catalog before spawning. The aliases `auto` and `inherit-parent` in upstream instructions both mean inherited selection. Omit `target` for an inherited T3 child. Inheritance does not change the parent model or effort.
 
@@ -99,8 +129,11 @@ The bundled `scripts/orch/orch.ts` is optional project bookkeeping, not a delega
 <!-- covers:cursor-features -->
 Cursor Automations, Bugbot integration, and Cursor cloud-agent dashboards are not T3 features. For existing bot comments, verify each claim against the code. Do not fabricate a bot pass count. Map an automation to T3 scheduling only when it meets the user's request and supported trigger. Report unsupported integrations instead of claiming they ran. T3 has no built-in PR creation tool. Create PRs with the resolved forge command, then register them with `link_pull_request`.
 
+<!-- covers:deslop -->
+`deslop` from `cursor-team-kit` is not installed. Run it as a checklist in the current session over the diff against its base. Remove comments that restate code, defensive checks or casts that the surrounding code does not use, abstractions with one caller, and style that departs from the file. Keep behavior unchanged and rerun the checks afterward. Do not search for the plugin on disk or the network.
+
 <!-- covers:control -->
-`cursor-team-kit`, `control-ui`, and `control-cli` mean runtime verification. Use available browser, terminal, and device tools. Prefer T3 `preview_*` and `device_*` when exposed. Follow tab ownership and device-control rules. A screenshot or recording must come from a real run. If required runtime access is absent, report verification as blocked rather than passed.
+`control-ui` and `control-cli` mean runtime verification, and `cursor-team-kit` otherwise names plugins this installation lacks. Use available browser, terminal, and device tools. Prefer T3 `preview_*` and `device_*` when exposed. Follow tab ownership and device-control rules. A screenshot or recording must come from a real run. If required runtime access is absent, report verification as blocked rather than passed.
 
 <!-- covers:platform -->
 Any other Cursor-specific field or command requires a supported mapping. Report it and its source path when no mapping exists. Do not pass unknown fields, invent a substitute tool, or claim a platform feature is available.

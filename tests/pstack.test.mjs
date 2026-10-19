@@ -24,7 +24,7 @@ function fixture() {
     ['pstack/docs/guide.md', entry('# Guide\n\n## Setup')],
   ]);
   const adapter = {
-    local: new Map([['t3.md', entry('# T3\n<!-- covers:task -->\nRead the tool schema.')]]),
+    local: new Map([['SKILL.md', entry('# T3\n<!-- covers:task -->\nRead the tool schema.')]]),
     overrides: new Map(),
     rules: { reviewedSources: { [GENERATOR]: hash(source.get(GENERATOR).bytes) }, overrides: {}, requirements: [{ id: 'task', pattern: '`Task`' }], highImpact: ['poteto-mode', 'generate-pstack'] },
   };
@@ -38,7 +38,7 @@ function sandbox(t) {
 function installedFiles(names = ['alpha'], text = 'v1') {
   return new Map([
     ['LICENSE', entry('upstream license')],
-    ['docs/harness/t3.md', entry('# T3')],
+    ['docs/note.md', entry('# Note')],
     ...names.map((name) => [`skills/${name}/SKILL.md`, entry(skill(name, text))]),
   ]);
 }
@@ -53,6 +53,10 @@ test('generation pins omitted links, normalizes display names, retains permissio
   assert.match(mode, /name: poteto-mode/);
   assert.equal(mode.match(/<!-- pstack-t3 adapter -->/g).length, 1);
   assert.ok(mode.includes(`https://github.com/cursor/plugins/blob/${lock.commit}/pstack/docs/guide.md?view=1#setup`));
+  assert.ok(mode.includes('(../pstack-t3-adapter/SKILL.md)'));
+  assert.equal(first.get('skills/pstack-t3-adapter/SKILL.md').bytes.toString(), adapter.local.get('SKILL.md').bytes.toString());
+  assert.equal(first.get('skills/pstack-t3-adapter/agents/poteto-agent.md').bytes.toString(), 'Read the mode.');
+  assert.equal(first.has('agents/poteto-agent.md'), false);
   assert.equal(first.get('skills/poteto-mode/run.sh').executable, true);
   const provenance = JSON.parse(first.get('provenance.json').bytes);
   assert.equal(provenance.files['skills/poteto-mode/SKILL.md'].originalFrontmatterName, 'Poteto Mode');
@@ -74,9 +78,9 @@ test('drift includes removed files and executable permission changes', (t) => {
 
 test('missing adapter coverage, changed generator baselines, and changed overrides block generation', () => {
   const { source, adapter } = fixture();
-  adapter.local.set('t3.md', entry('No coverage.'));
+  adapter.local.set('SKILL.md', entry('No coverage.'));
   assert.throws(() => render(source, lock, adapter), /no mapping for task/);
-  adapter.local.set('t3.md', entry('<!-- covers:task -->'));
+  adapter.local.set('SKILL.md', entry('<!-- covers:task -->'));
   source.set(GENERATOR, entry('changed'));
   assert.throws(() => render(source, lock, adapter), /Review required/);
   adapter.rules.reviewedSources[GENERATOR] = hash('changed');

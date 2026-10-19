@@ -9,7 +9,7 @@ The main project files separate source tracking, adaptation, generation, and ins
 ```text
 upstream.lock.json
 adapter/
-	t3.md
+	SKILL.md
 	rules.json
 overrides/
 	skills/
@@ -25,8 +25,9 @@ scripts/
 	install.mjs
 generated/
 	skills/
-	agents/
-	docs/harness/t3.md
+		pstack-t3-adapter/
+			SKILL.md
+			agents/
 	LICENSE
 	provenance.json
 tests/
@@ -47,7 +48,8 @@ The generator builds a candidate tree in a staging directory. The published tree
 The generator has the following requirements:
 
 - Discover every skill directory that contains `SKILL.md` and copy its complete contents.
-- Copy upstream agent documents and the upstream license.
+- Copy upstream agent documents into the adapter skill's `agents/` directory and copy the upstream license.
+- Generate the adapter as the sibling skill `pstack-t3-adapter`. The installer links skills only, and a skill finds a sibling at `../<name>/SKILL.md` from the path the host reports. A path through `docs/` or a parent directory would resolve through the symlink and fail, so every file a skill reads lives inside a linked skill directory.
 - Preserve executable permissions on copied files.
 - Scan Markdown files, including playbooks and references, for platform-specific concepts.
 - Add a T3 adapter instruction to every skill entry point. Preserve its frontmatter except for normalizing a display name to its matching directory slug. Record the original name in provenance. Repeated generation adds the instruction once.
@@ -69,13 +71,16 @@ The adapter defines the following mappings:
 | `Task` | Select an available delegation tool. Use `delegate_task` for T3-owned children and for models that native tools do not support. |
 | Model selection | Resolve provider instances, model IDs, and supported options through `orchestrator_capabilities`. Cursor model slugs are not T3 model IDs. |
 | Background work | Prefer async delegation and completion notifications. Read status when a result is needed during the active turn. |
-| Agent types | Include the generated agent document path and a requirement to read it in the child brief. |
+| Agent types | Include the absolute path of the agent document under `pstack-t3-adapter/agents/` and a requirement to read it in the child brief. |
 | Read-only work | Prohibit edits in the brief and verify the resulting state. Runtime permission modes do not provide a read-only switch. |
 | Cloud workers | Use `delegate_task` with `isolation: "worktree"` for an isolated child. The child starts from the parent's local commit. It does not receive uncommitted edits. |
 | `cloud_base_branch` | Resolve the requested baseline explicitly. Report a baseline that the chosen delegation API cannot express. |
 | Top-level conversations | Use `t3_thread_launch` when the user requests a separate top-level conversation. The launch request binds its workspace. |
 | Independent review rounds | Create a new task with the original brief, previous findings, responses, and unresolved objections. Each round has a distinct request ID. |
 | Stateful follow-ups | Reuse a child conversation only when the follow-up requires its existing state and the current tool contract permits reuse. |
+| Detecting T3 Code | Session instructions or a callable `delegate_task` or `orchestrator_capabilities` mean T3. The host name does not decide it. Without T3, `Task` maps to the host's subagents or to work in the current session, and the report says independent review did not happen. |
+| `deslop` | Run as a checklist over the diff in the current session. Do not search for the Cursor plugin. |
+| Unreadable adapter | Stop and tell the user. |
 | PR watching | Use `watch_pull_request` and its notification lifecycle. |
 | Recurring work | Use `schedule_task` with a structured schedule when the user requests persistent recurring work. A single autonomous run does not imply a recurring schedule. |
 | Transcript inspection | Use `t3_thread_search` and `t3_thread_read` within the relevant project. |

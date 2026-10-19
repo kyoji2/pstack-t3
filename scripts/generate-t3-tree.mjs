@@ -2,11 +2,13 @@ import { posix, join } from 'node:path';
 import { entry, hash, json, readJson, readTree, safePath } from './files.mjs';
 import { GENERATOR, validateLock } from './source.mjs';
 
+const ADAPTER_DIR = 'skills/pstack-t3-adapter';
+
 export function loadAdapter(root) {
   const local = readTree(join(root, 'adapter'));
   const rules = readJson(join(root, 'adapter', 'rules.json'));
   const overrides = readTree(join(root, 'overrides'));
-  if (!local.has('t3.md')) throw new Error('Missing adapter/t3.md.');
+  if (!local.has('SKILL.md')) throw new Error('Missing adapter/SKILL.md.');
   return { local, rules, overrides };
 }
 
@@ -61,7 +63,7 @@ function inject(text, name) {
     throw new Error(`Invalid skill frontmatter: ${name}`);
   }
   const header = frontmatter[0].replace(/^name:.*$/m, `name: ${name}`);
-  const notice = '<!-- pstack-t3 adapter -->\nBefore following this skill in T3 Code, read [the T3 adapter](../../docs/harness/t3.md). Its platform mappings apply to this skill and its linked files.\n';
+  const notice = '<!-- pstack-t3 adapter -->\nBefore following this skill, read [the T3 adapter](../pstack-t3-adapter/SKILL.md). Its platform mappings apply to this skill and its linked files. If you cannot read it, stop and tell the user.\n';
   if (text.includes('<!-- pstack-t3 adapter -->')) throw new Error(`Unexpected adapter marker in input: ${name}`);
   return `${header}\n${notice}\n${text.slice(frontmatter[0].length).replace(/^\s*\n/, '')}`;
 }
@@ -69,7 +71,7 @@ function inject(text, name) {
 export function render(source, lock, adapter) {
   validateLock(lock);
   const { local, rules, overrides } = adapter;
-  const guide = local.get('t3.md').bytes.toString('utf8');
+  const guide = local.get('SKILL.md').bytes.toString('utf8');
   const problems = [];
   for (const [path, reviewed] of Object.entries(rules.reviewedSources)) {
     const file = source.get(path);
@@ -94,7 +96,7 @@ export function render(source, lock, adapter) {
   const origins = {};
   for (const [path, file] of source) {
     if (!path.startsWith('pstack/skills/') && !path.startsWith('pstack/agents/') && path !== 'pstack/LICENSE') continue;
-    const out = safePath(path.slice('pstack/'.length));
+    const out = safePath(path.startsWith('pstack/agents/') ? `${ADAPTER_DIR}/${path.slice('pstack/'.length)}` : path.slice('pstack/'.length));
     files.set(out, { ...file });
     origins[out] = { source: path, sourceHash: hash(file.bytes), transform: 'copy' };
   }
@@ -102,8 +104,6 @@ export function render(source, lock, adapter) {
     files.set(path, { ...file });
     origins[path] = { source: `pstack/${path}`, override: `overrides/${path}`, sourceHash: rules.overrides[path], overrideHash: hash(file.bytes), transform: 'override' };
   }
-  files.set('docs/harness/t3.md', local.get('t3.md'));
-  origins['docs/harness/t3.md'] = { source: 'adapter/t3.md', transform: 'copy' };
   for (const [path, file] of files) {
     if (/^skills\/[^/]+\/SKILL\.md$/.test(path)) {
       const text = file.bytes.toString('utf8');
@@ -113,6 +113,9 @@ export function render(source, lock, adapter) {
       if (declared !== path.split('/')[1]) origins[path].originalFrontmatterName = declared;
     }
   }
+  if (files.has(`${ADAPTER_DIR}/SKILL.md`)) throw new Error(`Upstream already provides ${ADAPTER_DIR}.`);
+  files.set(`${ADAPTER_DIR}/SKILL.md`, local.get('SKILL.md'));
+  origins[`${ADAPTER_DIR}/SKILL.md`] = { source: 'adapter/SKILL.md', transform: 'copy' };
   for (const [path, file] of files) {
     if (path.endsWith('.md')) files.set(path, entry(rewriteLinks(file.bytes.toString('utf8'), path, source, files, lock, rules.linkPlaceholders || []), file.executable));
   }
