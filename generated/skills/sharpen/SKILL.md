@@ -5,6 +5,6 @@ disable-model-invocation: true
 ---
 
 <!-- pstack-t3 adapter -->
-Before following this skill in T3 Code, read [the T3 adapter](../../docs/harness/t3.md). Its platform mappings apply to this skill and its linked files.
+Before following this skill, read [the T3 adapter](../pstack-t3-adapter/SKILL.md). Its platform mappings apply to this skill and its linked files. If you cannot read it, stop and tell the user.
 
 Before starting, ask how a top expert would approach this task (their raw sources, their real methods, an outside check that the result is right), what the user is really after, and whether the task is over- or underspecified. Loosen constraints that don't serve the goal as readily as you add ones that do, and leave choices that are the user's to make open instead of deciding them. Fold in only what makes the work better, not bigger, but always keep one outside check that the result is right, without narrating the framing, then do the work. Don't hand back a rewritten prompt.

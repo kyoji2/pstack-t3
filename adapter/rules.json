@@ -39,6 +39,7 @@
     { "id": "loop", "pattern": "/loop|loop skill" },
     { "id": "watch", "pattern": "watch-pr" },
     { "id": "store", "pattern": "agent.s store|scripts/orch/|store path" },
+    { "id": "deslop", "pattern": "deslop" },
     { "id": "control", "pattern": "cursor-team-kit|control-ui|control-cli" },
     { "id": "platform", "pattern": "Cursor" }
   ]

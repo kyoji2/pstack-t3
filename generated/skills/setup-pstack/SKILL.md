@@ -5,7 +5,7 @@ disable-model-invocation: true
 ---
 
 <!-- pstack-t3 adapter -->
-Before following this skill in T3 Code, read [the T3 adapter](../../docs/harness/t3.md). Its platform mappings apply to this skill and its linked files.
+Before following this skill, read [the T3 adapter](../pstack-t3-adapter/SKILL.md). Its platform mappings apply to this skill and its linked files. If you cannot read it, stop and tell the user.
 
 # Set up pstack models
 
@@ -64,4 +64,4 @@ The sample panel uses inheritance to illustrate the format. It does not satisfy 
 
 Check the JSON syntax, version, exact role names, target fields, each selected model, and all option values against the live catalog. Panel arrays must be nonempty. Write the whole file after validation so repeated setup produces one configuration.
 
-Report the written path, the selected budget, the panel sizes, and any roles that inherit the parent. Do not write Cursor `.mdc` files or add these roles to `AGENTS.md` or `CLAUDE.md`. The [T3 adapter](../../docs/harness/t3.md) reads this configuration explicitly.
+Report the written path, the selected budget, the panel sizes, and any roles that inherit the parent. Do not write Cursor `.mdc` files or add these roles to `AGENTS.md` or `CLAUDE.md`. The [T3 adapter](../pstack-t3-adapter/SKILL.md) reads this configuration explicitly.

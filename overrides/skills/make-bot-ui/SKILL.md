@@ -32,4 +32,4 @@ Use the application's existing deployment or preview setup. Exposing the UI to a
 
 Exercise a harmless action through the real page and server. Confirm the corresponding T3 event and the thread's result. If credentials or remote access are missing, report the blocked step and the code checks that passed.
 
-Report the implemented actions and the scheduled task ID. Keep sensitive endpoint URLs out of public artifacts. If the webhook is temporary, delete the scheduled task after verification. The [T3 adapter](../../docs/harness/t3.md) defines the platform mappings.
+Report the implemented actions and the scheduled task ID. Keep sensitive endpoint URLs out of public artifacts. If the webhook is temporary, delete the scheduled task after verification. The [T3 adapter](../pstack-t3-adapter/SKILL.md) defines the platform mappings.
