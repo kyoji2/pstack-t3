@@ -4,11 +4,11 @@
     "version": 1,
     "repository": "https://github.com/cursor/plugins.git",
     "source": "pstack",
-    "commit": "bc1443790cc980d0ea857663260a831299884508"
+    "commit": "190d28736eff128ec94f502a22c7fe0c4b56cd37"
   },
   "inputs": {
     "adapter/SKILL.md": "8de9e13bd7274aa60cad68cd40867d3048e60ceee96ce803c473acd9fe74c75f",
-    "adapter/rules.json": "57425d77360aeda15a8e6c1078633ff551ed27df3d540fb2bb586823b0181423"
+    "adapter/rules.json": "663e1ee4f5c69e9848e47fe4076bcc20bc32d1cc46820ee18c84a2116676e015"
   },
   "requirements": {
     "task": [
@@ -46,11 +46,13 @@
       "pstack/skills/architect/references/runner-prompt.md",
       "pstack/skills/arena/SKILL.md",
       "pstack/skills/automate-me/SKILL.md",
+      "pstack/skills/create-formal-verification-skill/SKILL.md",
       "pstack/skills/create-verification-skill/SKILL.md",
       "pstack/skills/figure-it-out/SKILL.md",
       "pstack/skills/how/SKILL.md",
       "pstack/skills/interrogate/SKILL.md",
       "pstack/skills/ketchup/SKILL.md",
+      "pstack/skills/maintain-formal-verification-skill/SKILL.md",
       "pstack/skills/maintain-verification-skill/SKILL.md",
       "pstack/skills/make-bot-ui/SKILL.md",
       "pstack/skills/no-comments/SKILL.md",
@@ -372,6 +374,14 @@
       "sha256": "dcd094ef49202ea57805e9f92c164738b6f4457d21db50ebc1ae5b1f78d42c2d",
       "executable": false
     },
+    "skills/create-formal-verification-skill/SKILL.md": {
+      "source": "pstack/skills/create-formal-verification-skill/SKILL.md",
+      "sourceHash": "6c934cd15a9583533ff9b7a9cad62775d7e80402d26d3ba7f74f79ea21a1d8eb",
+      "transform": "copy",
+      "adapterInjected": true,
+      "sha256": "af9359492a000d7b207dbbd704d3f91b5e30496250b34227f58f22b0b877dd71",
+      "executable": false
+    },
     "skills/create-verification-skill/SKILL.md": {
       "source": "pstack/skills/create-verification-skill/SKILL.md",
       "sourceHash": "d353973547bf8ad8977eca645f4cd4feaed0d32f4b43d1448f906b0a76c4d694",
@@ -483,6 +493,14 @@
       "sha256": "89bd9804f898419e674c57b694a55e1b65a713edb4e6f483fb2c9fa1989378fb",
       "executable": false
     },
+    "skills/maintain-formal-verification-skill/SKILL.md": {
+      "source": "pstack/skills/maintain-formal-verification-skill/SKILL.md",
+      "sourceHash": "0c96f54293542d3818b68754562b338073958781a9684454611dca37592e2d2c",
+      "transform": "copy",
+      "adapterInjected": true,
+      "sha256": "38d2677858dd9c8195b5f053a7af99a7308db9f0d2b31ddca0c0c6ab52bc079e",
+      "executable": false
+    },
     "skills/maintain-verification-skill/SKILL.md": {
       "source": "pstack/skills/maintain-verification-skill/SKILL.md",
       "sourceHash": "515c0eaa054b3f6be1b1fb06f2c2f173c80fddb58bbcac57576f89c479bc68e8",
@@ -511,10 +529,10 @@
     },
     "skills/poteto-help/SKILL.md": {
       "source": "pstack/skills/poteto-help/SKILL.md",
-      "sourceHash": "be8f5a58067d8c5d03ab8bd3641e7329966bc3b97d91ec2f284e882eaf2296b8",
+      "sourceHash": "67c77ee5e91c19809b01d08cc73cc2870a52fb95fc64dc33328bf8ff9e49891c",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "ed029af5af999792eedcbddf993e5ec078f92f7bdbe2172e40105224cfcc2207",
+      "sha256": "4fd838867208b986faf5f69b632bd4550ea5efaa65537aedf65dd7ad8cb64042",
       "executable": false
     },
     "skills/poteto-help/references/prompting.md": {
@@ -526,9 +544,9 @@
     },
     "skills/poteto-help/references/recipes.md": {
       "source": "pstack/skills/poteto-help/references/recipes.md",
-      "sourceHash": "5fb97a805976a82db0aba5cc8943e88d0cb38b17a0d6b8e89a44633677febb1a",
+      "sourceHash": "f2d573014f72f7c798b1998b45f4360a8a83e7b8026c4ed9074e56c5a9d49338",
       "transform": "copy",
-      "sha256": "5fb97a805976a82db0aba5cc8943e88d0cb38b17a0d6b8e89a44633677febb1a",
+      "sha256": "f2d573014f72f7c798b1998b45f4360a8a83e7b8026c4ed9074e56c5a9d49338",
       "executable": false
     },
     "skills/poteto-mode/SKILL.md": {
@@ -1113,19 +1131,19 @@
     "skills/setup-pstack/SKILL.md": {
       "source": "pstack/skills/setup-pstack/SKILL.md",
       "override": "overrides/skills/setup-pstack/SKILL.md",
-      "sourceHash": "d61b47256a18155a81c8e5ef95e3cc6569ce8c18317c35c4dd9c8015cf68cb59",
-      "overrideHash": "a62d78c9b3699f6b29e253839ebba56a8f921e48d81f066576bdc803ab14d19a",
+      "sourceHash": "b45512f6ca5e96e81681984683b7472bfe892581da3a89a73cca4159438f29ed",
+      "overrideHash": "1467de1f15c0bcb25e91cd98ce0b1bced776dc682b6a71ce0de3afc52c4596de",
       "transform": "override",
       "adapterInjected": true,
-      "sha256": "4a65d9a7079a5bec214d036ff7f50da6f0db563dc65495962fd163902ffd7dad",
+      "sha256": "ee69605cc8faa2df58446cc1aa4116e8e191ff3f540a9681db6bd571307c3c68",
       "executable": false
     },
     "skills/sharpen/SKILL.md": {
       "source": "pstack/skills/sharpen/SKILL.md",
-      "sourceHash": "6bcd73916696eb9c5b79b6f960983760c34bcc28937c11142dd8d86b5107aa46",
+      "sourceHash": "563dfc460c605d311e650726288e2f1cbd61eab817db178d6e7e29643e07e7a2",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "10675459e7e419d52e0a27940dfd2464c1b93e83398b01c3056984b93a68a9ab",
+      "sha256": "30fa7d1e1816127ac2d324323ea2b809e2a8ec4d0d414b2d6adce863fe7ca624",
       "executable": false
     },
     "skills/show-me-your-work/SKILL.md": {
