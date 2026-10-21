@@ -62,3 +62,9 @@ The sample panel uses inheritance to illustrate the format. It does not satisfy 
 Check the JSON syntax, version, exact role names, target fields, each selected model, and all option values against the live catalog. Panel arrays must be nonempty. Write the whole file after validation so repeated setup produces one configuration.
 
 Report the written path, the selected budget, the panel sizes, and any roles that inherit the parent. Do not write Cursor `.mdc` files or add these roles to `AGENTS.md` or `CLAUDE.md`. The [T3 adapter](../pstack-t3-adapter/SKILL.md) reads this configuration explicitly.
+
+## Offer project verification skills
+
+Check whether the project has a way to drive the real app for proof, such as a `verify-*` skill or an existing harness. If it has neither, offer once to generate a project-local verification skill with [create-verification-skill](../create-verification-skill/SKILL.md). Run that skill if the user accepts. If they decline, continue without pushing.
+
+Then check whether the project has a skill that runs a model checker, proof, or another verifier against its code. If it has none, offer once to generate a formal verification skill with [create-formal-verification-skill](../create-formal-verification-skill/SKILL.md), explaining that it checks a key property in every case within a stated scope. Run that skill if the user accepts. If they decline, finish without pushing. Existing authorization to create either skill is sufficient to proceed.

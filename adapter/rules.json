@@ -5,7 +5,7 @@
     "pstack/docs/harness/claude-code.md": "c79e2283d3a83c6be3dd1cac33f9c074067c95e610ae6e0a16d9fdee84058927"
   },
   "overrides": {
-    "skills/setup-pstack/SKILL.md": "d61b47256a18155a81c8e5ef95e3cc6569ce8c18317c35c4dd9c8015cf68cb59",
+    "skills/setup-pstack/SKILL.md": "b45512f6ca5e96e81681984683b7472bfe892581da3a89a73cca4159438f29ed",
     "skills/make-bot-ui/SKILL.md": "ad19d0bc6764287ec08c2521701974e7dac941f72e4d0fe81a24f4614494586f"
   },
   "linkPlaceholders": [
