@@ -93,7 +93,9 @@ A role entry is `"inherit-parent"` or an object with `providerInstanceId`, `mode
 
 For an unconfigured single role, inherit the parent and report that choice. An explicit unavailable choice requires a valid replacement, not a silent fallback. A requested diverse panel needs enough distinct valid choices. If the configuration cannot supply them, run setup or ask the user before spawning. Never silently collapse a cross-model panel to the parent model.
 
-Each entry in a panel array creates one seat, including repeated inherited entries. `arena cross-judge pool` supplies candidates for one judge, with a different model family preferred. Provider diversity alone does not prove model-family diversity. `swarm workers` is one default target unless a race supplies targets per arm. Never infer model capability or price from provider names.
+Each entry in a panel array creates one seat, including repeated inherited entries. For Arena's cross-judge, consider explicit `arena cross-judge pool` entries in order and select only a model known to be from a different family than the parent. Inherited entries cannot judge. Provider diversity alone does not prove model-family diversity. If the parent's family or a candidate's family cannot be established, or no eligible configured target is available, skip the judge and report why; do not guess a family or substitute an unconfigured model. `swarm workers` is one default target unless a race supplies targets per arm. Never infer model capability or price from provider names.
+
+Interrogate's adversaries need writable isolated checkouts for reproductions. A T3 worktree starts at the parent's commit and excludes uncommitted changes. Preserve the review scope by transferring those changes into each isolated checkout without overwriting unrelated work, subject to the host's supported tools and the user's authorization. If the full scope cannot be transferred, report the gap rather than claiming it was reviewed. Re-run findings only when doing so is authorized and safe.
 
 The budget chooses only options exposed by the catalog. A fast suffix has no direct T3 equivalent. Change effort or speed only through a supported option and preserve explicit user choices. If the catalog is unavailable, report the limitation before a workflow that needs explicit or diverse models.
 
@@ -124,7 +126,7 @@ For GitHub PR watching use `watch_pull_request`. Handle existing findings before
 
 The bundled `scripts/watch-pr/watch-pr` has an optional status-only role. Do not start its polling loop alongside a T3 watch. For a forge T3 cannot watch, use that forge's supported status commands and report the limitation.
 
-The bundled `scripts/orch/orch.ts` is optional project bookkeeping, not a delegation or wake API. Its Bun dependency must be available before use. Do not run bootstrap or install dependencies merely because files were copied. Preserve the upstream project's verification ledger when a workflow needs it, and use T3 task IDs for live child status. After a restart, inspect durable T3 task and thread state rather than assuming every local child died.
+For Orchestrate, keep the project tracker and store in an explicitly chosen writable location. Use T3 task IDs and completion notifications for child status and supported PR event tools for watches. The upstream orchestration bookkeeping script has been removed; do not invoke it. After a restart, inspect durable T3 task and thread state rather than assuming every local child died.
 
 <!-- covers:cursor-features -->
 Cursor Automations, Bugbot integration, and Cursor cloud-agent dashboards are not T3 features. For existing bot comments, verify each claim against the code. Do not fabricate a bot pass count. Map an automation to T3 scheduling only when it meets the user's request and supported trigger. Report unsupported integrations instead of claiming they ran. T3 has no built-in PR creation tool. Create PRs with the resolved forge command, then register them with `link_pull_request`.
@@ -136,4 +138,6 @@ Cursor Automations, Bugbot integration, and Cursor cloud-agent dashboards are no
 `control-ui` and `control-cli` mean runtime verification, and `cursor-team-kit` otherwise names plugins this installation lacks. Use available browser, terminal, and device tools. Prefer T3 `preview_*` and `device_*` when exposed. Follow tab ownership and device-control rules. A screenshot or recording must come from a real run. If required runtime access is absent, report verification as blocked rather than passed.
 
 <!-- covers:platform -->
+Statechart's bundled scripts require a compatible TypeScript runtime and may install Java and TLC using mise on first use. Follow the host's tool and authorization rules before installing dependencies or running them. Its Pele rendering instructions apply when compatible with the host's output requirements; otherwise follow the host's visual delivery rules and report any rendering limitation.
+
 Any other Cursor-specific field or command requires a supported mapping. Report it and its source path when no mapping exists. Do not pass unknown fields, invent a substitute tool, or claim a platform feature is available.

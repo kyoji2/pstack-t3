@@ -53,7 +53,7 @@ Omit `options` when none apply. Never write the placeholder values above. Keep p
 
 Single-target roles are `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, `hardest tasks`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, and `swarm workers`.
 
-Panel roles are `arena runners`, `architect runners`, and `interrogate reviewers`. Each array entry creates one seat. `arena cross-judge pool` is also an array, but supplies candidates for one judge. Prefer a judge from a different model family than the parent. Multiple providers do not necessarily supply different model families.
+Panel roles are `arena runners`, `architect runners`, and `interrogate reviewers`. Each array entry creates one seat. `arena cross-judge pool` supplies candidates for one judge in preference order. Only an explicit model known to be from a different family than the parent can judge. Inherited entries cannot judge, and multiple providers do not necessarily supply different model families. If no eligible model can be established, Arena skips the judge and reports why.
 
 The sample panel uses inheritance to illustrate the format. It does not satisfy a request for different model families. Configure explicit available models for that request. When the catalog lacks enough distinct choices, explain the limitation before writing or spawning.
 
