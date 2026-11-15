@@ -84,7 +84,7 @@ A follow-up that requires a child's existing process or uncommitted state may us
 ## Models and roles
 
 <!-- covers:models -->
-Cursor model slugs such as `claude-*`, `grok-*`, and `gpt-*` do not identify T3 targets. Resolve provider instance IDs, exact model IDs, and supported options through `orchestrator_capabilities`. Preserve model IDs containing slashes. Do not split a combined provider/model string or guess an effort option from a slug.
+Cursor model slugs such as `claude-*`, `gemini-*`, `grok-*`, and `gpt-*` do not identify T3 targets. Resolve provider instance IDs, exact model IDs, and supported options through `orchestrator_capabilities`. Preserve model IDs containing slashes. Do not split a combined provider/model string or guess an effort option from a slug.
 
 <!-- covers:modelconfig -->
 Read project-root `pstack-models.md` if present. Otherwise read `~/.agents/pstack-models.md`. The file contains the JSON configuration described by [setup-pstack](../setup-pstack/SKILL.md). No `.mdc` rule is loaded.
@@ -93,7 +93,9 @@ A role entry is `"inherit-parent"` or an object with `providerInstanceId`, `mode
 
 For an unconfigured single role, inherit the parent and report that choice. An explicit unavailable choice requires a valid replacement, not a silent fallback. A requested diverse panel needs enough distinct valid choices. If the configuration cannot supply them, run setup or ask the user before spawning. Never silently collapse a cross-model panel to the parent model.
 
-Each entry in a panel array creates one seat, including repeated inherited entries. For Arena's cross-judge, consider explicit `arena cross-judge pool` entries in order and select only a model known to be from a different family than the parent. Inherited entries cannot judge. Provider diversity alone does not prove model-family diversity. If the parent's family or a candidate's family cannot be established, or no eligible configured target is available, skip the judge and report why; do not guess a family or substitute an unconfigured model. `swarm workers` is one default target unless a race supplies targets per arm. Never infer model capability or price from provider names.
+Each entry in a panel array creates one seat, including repeated inherited entries. For Arena's cross-judge, consider explicit `arena cross-judge pool` entries in order and select only a model known to be from a different vendor than the parent. Fable and other Claude models count as the same vendor even though upstream treats them as separate families for runner selection. Inherited entries cannot judge. Different provider instances do not establish different model vendors. If the parent's vendor or a candidate's vendor cannot be established, or no eligible configured target is available, skip the judge and report why; do not guess a vendor or substitute an unconfigured model. `swarm workers` is one default target unless a race supplies targets per arm. Never infer model capability or price from provider names.
+
+The upstream `# defaults: 2` marker and Cursor slug migration apply to Cursor's rule format, not this adapter's JSON configuration. Do not prompt a JSON configuration user to rerun setup merely because that marker is absent. Keep honoring configured T3 targets, report retired role entries during setup, and do not silently replace a model based on an upstream slug.
 
 Interrogate's adversaries need writable isolated checkouts for reproductions. A T3 worktree starts at the parent's commit and excludes uncommitted changes. Preserve the review scope by transferring those changes into each isolated checkout without overwriting unrelated work, subject to the host's supported tools and the user's authorization. If the full scope cannot be transferred, report the gap rather than claiming it was reviewed. Re-run findings only when doing so is authorized and safe.
 

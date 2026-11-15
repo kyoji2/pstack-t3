@@ -2,15 +2,13 @@
   "version": 1,
   "reviewedSources": {
     "scripts/generate-pstack-harness-trees.mjs": "d158bb93afd0c67dffbf5a43592ca3958bc541c8664bb1a80bbca74827abda86",
-    "pstack/docs/harness/claude-code.md": "c79e2283d3a83c6be3dd1cac33f9c074067c95e610ae6e0a16d9fdee84058927"
+    "pstack/docs/harness/claude-code.md": "56d732c4b2375e355b5316a8467f080b73f2a4e36124db96155f4c1c66edee11"
   },
   "overrides": {
-    "skills/setup-pstack/SKILL.md": "df8ad3638a4dca31fb4b43d58056f0299f23ad0530614166d55ef989062b41ec",
+    "skills/setup-pstack/SKILL.md": "4c53ea532bbfc429833c8cf5480a0fffcd10c3e32bc26256feff3d7ee7c9da85",
     "skills/make-bot-ui/SKILL.md": "ad19d0bc6764287ec08c2521701974e7dac941f72e4d0fe81a24f4614494586f"
   },
-  "linkPlaceholders": [
-    { "path": "skills/why/references/synthesizer-prompt.md", "href": "url" }
-  ],
+  "linkPlaceholders": [],
   "highImpact": [
     "^scripts/generate-pstack-harness-trees\\.mjs$",
     "^pstack/docs/harness/",
