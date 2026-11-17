@@ -55,6 +55,8 @@ To run another pstack skill, read `../<name>/SKILL.md` and follow it. This also 
 <!-- covers:agent -->
 `subagent_type: generalPurpose` means a general worker with the required tool access. `poteto-agent` and `comment-sicko` are instructions in [agents/poteto-agent.md](agents/poteto-agent.md) and [agents/comment-sicko.md](agents/comment-sicko.md), not registered T3 agent types. Begin the worker brief with the document's absolute path and a requirement to read it. A child does not share your working directory, so never pass a relative path. Include this adapter's absolute path as well.
 
+An agent document's `model:` line is Cursor metadata holding a Cursor slug. Never pass it as a T3 target. Resolve the role from `pstack-models.md` instead. When that role inherits the parent, omit `target` even though `poteto-agent` names a model, because a T3 child does not apply an agent document's frontmatter.
+
 <!-- covers:readonly -->
 `readonly: true` means the brief prohibits file edits, commits, and other state changes. Verify the resulting checkout state. `readonly: false` means normal task permissions. T3 runtime modes are approval policies, not a read-only switch. Leave `runtimeMode` unset unless the user requests a supervised child.
 
@@ -62,6 +64,8 @@ To run another pstack skill, read `../<name>/SKILL.md` and follow it. This also 
 Use `mode: "async"` for background T3 delegation. Retain each `taskId`. Completion notifications wake the parent. End the turn when only delegated work remains. Use `task_status` when the result is needed during the current turn and `task_cancel` to stop it. A wait timeout does not cancel a child. Do not spawn polling agents or wait loops.
 
 Every child brief stands alone. Include the goal, scope, source paths, constraints, required adapter and agent documents, expected verification, and report format. A T3 child receives only the supplied prompt. Keep one writer per checkout when parallel tasks can touch the same files.
+
+For work under `poteto-mode`, the brief's first line is `Read <absolute path>/worker.md before anything else.`, with the path to `../poteto-mode/worker.md`. That file carries the operator's rules for workers, and it applies unless the brief overrides a rule in so many words: add no gate above the stated bar, decide reversible calls instead of asking a person, and open PRs ready rather than draft. A delegated child therefore does not use a question tool; it makes the choice, says what it chose and why, and stops only for an irreversible action. A thread you launch counts as an agent you start, so its message carries the same first line.
 
 <!-- covers:environment -->
 `environment: "cloud"` means an isolated child when T3 owns the work. Use `delegate_task` with `isolation: "worktree"`. The checkout starts from the parent's current local commit after project setup. Uncommitted edits are not copied. Commit required inputs before starting the child, within the user's authorization. These are local worktrees, not remote machines.
@@ -93,13 +97,13 @@ A role entry is `"inherit-parent"` or an object with `providerInstanceId`, `mode
 
 For an unconfigured single role, inherit the parent and report that choice. An explicit unavailable choice requires a valid replacement, not a silent fallback. A requested diverse panel needs enough distinct valid choices. If the configuration cannot supply them, run setup or ask the user before spawning. Never silently collapse a cross-model panel to the parent model.
 
-Each entry in a panel array creates one seat, including repeated inherited entries. For Arena's cross-judge, consider explicit `arena cross-judge pool` entries in order and select only a model known to be from a different vendor than the parent. Fable and other Claude models count as the same vendor even though upstream treats them as separate families for runner selection. Inherited entries cannot judge. Different provider instances do not establish different model vendors. If the parent's vendor or a candidate's vendor cannot be established, or no eligible configured target is available, skip the judge and report why; do not guess a vendor or substitute an unconfigured model. `swarm workers` is one default target unless a race supplies targets per arm. Never infer model capability or price from provider names.
+Each entry in a panel array creates one seat, including repeated inherited entries. Any cross-model review, Arena's cross-judge included, needs another vendor's model rather than another family, so Fable and the other Claude models count as one vendor. For Arena's cross-judge, consider explicit `arena cross-judge pool` entries in order and select only a model known to be from a different vendor than the parent. Inherited entries cannot judge. Different provider instances do not establish different model vendors. If the parent's vendor cannot be established, use the first real configured target and report that the vendor check did not run. If a candidate's vendor cannot be established, or no eligible configured target is available, skip the judge and report why; do not guess a vendor or substitute an unconfigured model. `swarm workers` is one default target unless a race supplies targets per arm. Never infer model capability or price from provider names.
 
-The upstream `# defaults: 2` marker and Cursor slug migration apply to Cursor's rule format, not this adapter's JSON configuration. Do not prompt a JSON configuration user to rerun setup merely because that marker is absent. Keep honoring configured T3 targets, report retired role entries during setup, and do not silently replace a model based on an upstream slug.
+The upstream `# defaults: 2` and `# defaults: 3` markers and Cursor slug migration apply to Cursor's rule format, not this adapter's JSON configuration. Do not prompt a JSON configuration user to rerun setup merely because that marker is absent. Keep honoring configured T3 targets, report retired role entries during setup, and do not silently replace a model based on an upstream slug.
 
 Interrogate's adversaries need writable isolated checkouts for reproductions. A T3 worktree starts at the parent's commit and excludes uncommitted changes. Preserve the review scope by transferring those changes into each isolated checkout without overwriting unrelated work, subject to the host's supported tools and the user's authorization. If the full scope cannot be transferred, report the gap rather than claiming it was reviewed. Re-run findings only when doing so is authorized and safe.
 
-The budget chooses only options exposed by the catalog. A fast suffix has no direct T3 equivalent. Change effort or speed only through a supported option and preserve explicit user choices. If the catalog is unavailable, report the limitation before a workflow that needs explicit or diverse models.
+The budget chooses only options exposed by the catalog, and upstream caps every role at `xhigh`. Do not offer a higher effort as a budget choice; a model whose catalog top is lower runs at that top. A fast suffix has no direct T3 equivalent. Change effort or speed only through a supported option and preserve explicit user choices. If the catalog is unavailable, report the limitation before a workflow that needs explicit or diverse models.
 
 ## Paths and conversation history
 
@@ -128,7 +132,7 @@ For GitHub PR watching use `watch_pull_request`. Handle existing findings before
 
 The bundled `scripts/watch-pr/watch-pr` has an optional status-only role. Do not start its polling loop alongside a T3 watch. For a forge T3 cannot watch, use that forge's supported status commands and report the limitation.
 
-For Orchestrate, keep the project tracker and store in an explicitly chosen writable location. Use T3 task IDs and completion notifications for child status and supported PR event tools for watches. The upstream orchestration bookkeeping script has been removed; do not invoke it. After a restart, inspect durable T3 task and thread state rather than assuming every local child died.
+After a restart, inspect durable T3 task and thread state rather than assuming every local child died.
 
 <!-- covers:cursor-features -->
 Cursor Automations, Bugbot integration, and Cursor cloud-agent dashboards are not T3 features. For existing bot comments, verify each claim against the code. Do not fabricate a bot pass count. Map an automation to T3 scheduling only when it meets the user's request and supported trigger. Report unsupported integrations instead of claiming they ran. T3 has no built-in PR creation tool. Create PRs with the resolved forge command, then register them with `link_pull_request`.
