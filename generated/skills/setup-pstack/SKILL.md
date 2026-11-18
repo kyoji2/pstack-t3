@@ -21,7 +21,7 @@ Read project-root `pstack-models.md` if present, otherwise `~/.agents/pstack-mod
 
 Use the location the user requested. If no location is specified, ask whether to use the current project or the global file. If the user already authorized a location or choices, proceed with them.
 
-Ask for model preferences or a budget when the request does not provide them. The upstream budget labels are `unlimited`, `large`, `medium`, and `small`. These labels are preferences, not price estimates. Use only effort and speed options exposed by the catalog. Do not assume a provider is cheaper or a model is stronger from its name.
+Ask for model preferences or a budget when the request does not provide them. The upstream budget labels are `large`, `medium`, and `small`. Upstream moves effort from each role's starting level: `large` keeps it, `medium` lowers it one step, and `small` lowers it two steps on the ladder `xhigh` > `high` > `medium` > `low`. No role runs above `xhigh`, and a model whose catalog top is lower runs at that top. A stored `unlimited` budget becomes `large`. These labels are preferences, not price estimates; translate them only when the catalog exposes compatible options and the role has a known starting level. Otherwise ask for a choice. Do not assume a provider is cheaper or a model is stronger from its name.
 
 Show proposed roles and choices before writing unless the user has already authorized those choices. Report unavailable targets and unknown or retired roles. Never silently replace an explicit model. Preserve the requested panel size and model-family diversity.
 
@@ -54,15 +54,15 @@ A target is `"inherit-parent"` or an object of this shape:
 
 Omit `options` when none apply. Never write the placeholder values above. Keep provider and model in separate fields because model IDs can contain slashes.
 
-Single-target roles are `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, `hardest tasks`, `how explorer`, `how explainer`, `why investigators`, `why synthesizer`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, and `swarm workers`.
+Single-target roles are `feature, refactoring`, `bug-fix`, `perf-issue`, `hillclimb`, `judgment and prose`, and `swarm workers`. The `hardest tasks`, `reflect tooling`, `reflect judgment, divergent, synthesizer`, `how explorer`, `how explainer`, `why investigators`, and `why synthesizer` roles are retired. Report them when present; retain them until the user authorizes their removal.
 
-Panel roles are `arena runners`, `architect runners`, and `interrogate reviewers`. Each array entry creates one seat. `arena cross-judge pool` supplies candidates for one judge in preference order. Only an explicit model known to be from a different family than the parent can judge. Inherited entries cannot judge, and multiple providers do not necessarily supply different model families. If no eligible model can be established, Arena skips the judge and reports why.
+Panel roles are `arena runners` and `interrogate reviewers`. The `architect runners` role is retired and reported the same way. Each array entry creates one seat. `arena cross-judge pool` supplies candidates for one judge in preference order. Only an explicit model known to be from a different vendor than the parent can judge. Fable and other Claude models are one vendor, even though they are separate runner families. Inherited entries cannot judge, and multiple provider instances do not necessarily supply different model vendors. If no eligible model can be established, Arena skips the judge and reports why.
 
-The sample panel uses inheritance to illustrate the format. It does not satisfy a request for different model families. Configure explicit available models for that request. When the catalog lacks enough distinct choices, explain the limitation before writing or spawning.
+The sample panel uses inheritance to illustrate the format. It does not satisfy a request for different model families or Arena's different-vendor judge. Configure explicit available models for those requests. When the catalog lacks enough distinct choices, explain the limitation before writing or spawning. Upstream Cursor slug defaults and its `# defaults: 2` and `# defaults: 3` migrations do not identify live T3 models or choices in this JSON format; never automatically replace existing T3 targets based on those slugs.
 
 ## Validate and report
 
-Check the JSON syntax, version, exact role names, target fields, each selected model, and all option values against the live catalog. Panel arrays must be nonempty. Write the whole file after validation so repeated setup produces one configuration.
+Check the JSON syntax, version, active role names, target fields, each selected model, and all option values against the live catalog, with every offered effort at `xhigh` or below. Report a stored option above `xhigh` rather than silently lowering it. Report retained retired or unknown entries separately rather than treating them as active roles. Panel arrays must be nonempty. Write the whole file after validation so repeated setup produces one configuration.
 
 Report the written path, the selected budget, the panel sizes, and any roles that inherit the parent. Do not write Cursor `.mdc` files or add these roles to `AGENTS.md` or `CLAUDE.md`. The [T3 adapter](../pstack-t3-adapter/SKILL.md) reads this configuration explicitly.
 
