@@ -2,10 +2,10 @@
   "version": 1,
   "reviewedSources": {
     "scripts/generate-pstack-harness-trees.mjs": "d158bb93afd0c67dffbf5a43592ca3958bc541c8664bb1a80bbca74827abda86",
-    "pstack/docs/harness/claude-code.md": "5f859ef4fa39664b1ccdff521bcb15854f8805394191da509e68ce625b97cba6"
+    "pstack/docs/harness/claude-code.md": "ef17f2c50faf1e267e3db07d9b77fe1e91de13c7be8247602b84f997dd9308c8"
   },
   "overrides": {
-    "skills/setup-pstack/SKILL.md": "54ff000a23b5c7e2277be11a0ee1d6a2049a64fb1f59027288cf87ffc8759415",
+    "skills/setup-pstack/SKILL.md": "d452295f927301bad320b7c306cf6cecd0c421a63c76f36ddfce1fe064c1ed03",
     "skills/make-bot-ui/SKILL.md": "ad19d0bc6764287ec08c2521701974e7dac941f72e4d0fe81a24f4614494586f"
   },
   "linkPlaceholders": [],

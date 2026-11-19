@@ -4,11 +4,11 @@
     "version": 1,
     "repository": "https://github.com/cursor/plugins.git",
     "source": "pstack",
-    "commit": "e1cc03121a0e71129a4fb730d7c5528a0a3e43c8"
+    "commit": "e58dd043600587dbaf58ba315e7f2b38373eeb43"
   },
   "inputs": {
-    "adapter/SKILL.md": "47465a5070661b95ed55a3479764f0ab82b889ba7316edffa2e97299ca6eec07",
-    "adapter/rules.json": "234f3739e81b91ce92fac27a871ebbce3b226c5f23bc9584fdf95e15c00e1486"
+    "adapter/SKILL.md": "6ee5ee6afcb3bf7cf11cde7b058bd518e06899ef4c875c8e351c6868d9bb6a2f",
+    "adapter/rules.json": "2f7df8e3f5e30d3f94d1ff7810a76b5c42387cde129b27eebc0562dc1722a4ba"
   },
   "requirements": {
     "task": [
@@ -236,10 +236,10 @@
     },
     "skills/arena/SKILL.md": {
       "source": "pstack/skills/arena/SKILL.md",
-      "sourceHash": "04f79ee8239251bc0c8a9e92f895ebe7bff42e785a5f6ef8ed2dc34dae18e85d",
+      "sourceHash": "2573e96eec7f2dab88249cc0a5e391eaf9a6000427d7316af0298e6b899618ae",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "536b472c47eb664a52499a40f8f90d564fc3712f86d48c4f5dbef6765d0c2676",
+      "sha256": "16382b58ebe8063110d3bd86ceaf74ab14000ebece54c3b53bcb4f7f8224b6cf",
       "executable": false
     },
     "skills/automate-me/SKILL.md": {
@@ -406,7 +406,7 @@
       "sourceHash": "d6d72057e5cdfa5cebeec88ee50d1ebf8f46f2e64788f5580968a73a16aba08d",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "0197ecc143a5976016ace3cc084d8e54b125ac8cee832a753abc9d1dd60ff2b7",
+      "sha256": "7ca5e095fff92c9e937a064e5b13a9ddf9e506bf16483e7e449e14e442935db5",
       "executable": false
     },
     "skills/poteto-help/references/prompting.md": {
@@ -425,10 +425,10 @@
     },
     "skills/poteto-mode/SKILL.md": {
       "source": "pstack/skills/poteto-mode/SKILL.md",
-      "sourceHash": "67fd2c54fd25ebfae1e46db62c4b2e54f806a7ea9dfb6c83922de37e9b9635ea",
+      "sourceHash": "9c09f6ab6661975a5be108f925afe203e10966ee426e3d786f4d338c5b05bd9f",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "9ee615cc52dd082d44bf79a7e2fd743045220a7ee1e660ab4436ee86aca1224e",
+      "sha256": "677cc3d4c4629f9ebcd3dcf8049ec43608ecb40d80264d862d4ec414c71c6aee",
       "executable": false
     },
     "skills/poteto-mode/playbooks/authoring-a-skill.md": {
@@ -906,7 +906,7 @@
     "skills/pstack-t3-adapter/SKILL.md": {
       "source": "adapter/SKILL.md",
       "transform": "copy",
-      "sha256": "47465a5070661b95ed55a3479764f0ab82b889ba7316edffa2e97299ca6eec07",
+      "sha256": "6ee5ee6afcb3bf7cf11cde7b058bd518e06899ef4c875c8e351c6868d9bb6a2f",
       "executable": false
     },
     "skills/pstack-t3-adapter/agents/comment-sicko.md": {
@@ -942,11 +942,11 @@
     "skills/setup-pstack/SKILL.md": {
       "source": "pstack/skills/setup-pstack/SKILL.md",
       "override": "overrides/skills/setup-pstack/SKILL.md",
-      "sourceHash": "54ff000a23b5c7e2277be11a0ee1d6a2049a64fb1f59027288cf87ffc8759415",
-      "overrideHash": "1a33e245287184bba1cf3d04ce528e81ea0a643eae90fe8dcee427b7be6e1461",
+      "sourceHash": "d452295f927301bad320b7c306cf6cecd0c421a63c76f36ddfce1fe064c1ed03",
+      "overrideHash": "65b643c49e654f4e75c923e575dd1c7f776c9c790c89491de951921748d5f2b8",
       "transform": "override",
       "adapterInjected": true,
-      "sha256": "6f59ee7ba69855f048abd615ffea1a556f453fb75e20a56a3945684bcc8c4846",
+      "sha256": "a81d6e6dfc2b1fd93a782c63dfee16e553a47d98094e0e6318005ff894e81dad",
       "executable": false
     },
     "skills/sharpen/SKILL.md": {
