@@ -4,11 +4,11 @@
     "version": 1,
     "repository": "https://github.com/cursor/plugins.git",
     "source": "pstack",
-    "commit": "e58dd043600587dbaf58ba315e7f2b38373eeb43"
+    "commit": "aaeb0ea3a0584995aa8f55ce44c6c5259414b896"
   },
   "inputs": {
-    "adapter/SKILL.md": "6ee5ee6afcb3bf7cf11cde7b058bd518e06899ef4c875c8e351c6868d9bb6a2f",
-    "adapter/rules.json": "2f7df8e3f5e30d3f94d1ff7810a76b5c42387cde129b27eebc0562dc1722a4ba"
+    "adapter/SKILL.md": "adadd123f782b434b1a05319e54f47e01c622eafd4d526462008f7e79c49b2ef",
+    "adapter/rules.json": "91f0667fa2a7d2458c0fa70876267461d7a85fc215a62c0ee379400634de656c"
   },
   "requirements": {
     "task": [
@@ -236,10 +236,10 @@
     },
     "skills/arena/SKILL.md": {
       "source": "pstack/skills/arena/SKILL.md",
-      "sourceHash": "2573e96eec7f2dab88249cc0a5e391eaf9a6000427d7316af0298e6b899618ae",
+      "sourceHash": "24366948a9546dcb7dfc15a5cf7a4571edd917a8c1efef060b458a0fad608053",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "16382b58ebe8063110d3bd86ceaf74ab14000ebece54c3b53bcb4f7f8224b6cf",
+      "sha256": "2e880855f94c7e8a6b06636b01f91a6412198956744958c5716d01b5ff1b0c74",
       "executable": false
     },
     "skills/automate-me/SKILL.md": {
@@ -406,7 +406,7 @@
       "sourceHash": "d6d72057e5cdfa5cebeec88ee50d1ebf8f46f2e64788f5580968a73a16aba08d",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "7ca5e095fff92c9e937a064e5b13a9ddf9e506bf16483e7e449e14e442935db5",
+      "sha256": "eb2db0d3a54d3b8962d246f5ab5c02b00e82a363b749929fef75f202440f8908",
       "executable": false
     },
     "skills/poteto-help/references/prompting.md": {
@@ -425,10 +425,10 @@
     },
     "skills/poteto-mode/SKILL.md": {
       "source": "pstack/skills/poteto-mode/SKILL.md",
-      "sourceHash": "9c09f6ab6661975a5be108f925afe203e10966ee426e3d786f4d338c5b05bd9f",
+      "sourceHash": "7aa026dc1fad7db0ea1ff39171e6b768ee99d03a7f46d0b9cd38973511251d81",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "677cc3d4c4629f9ebcd3dcf8049ec43608ecb40d80264d862d4ec414c71c6aee",
+      "sha256": "d522fa047fe0d0d7b724e5ef75ab62452bb2f4442fccf0579f0895a390ec8a48",
       "executable": false
     },
     "skills/poteto-mode/playbooks/authoring-a-skill.md": {
@@ -906,7 +906,7 @@
     "skills/pstack-t3-adapter/SKILL.md": {
       "source": "adapter/SKILL.md",
       "transform": "copy",
-      "sha256": "6ee5ee6afcb3bf7cf11cde7b058bd518e06899ef4c875c8e351c6868d9bb6a2f",
+      "sha256": "adadd123f782b434b1a05319e54f47e01c622eafd4d526462008f7e79c49b2ef",
       "executable": false
     },
     "skills/pstack-t3-adapter/agents/comment-sicko.md": {
@@ -942,11 +942,11 @@
     "skills/setup-pstack/SKILL.md": {
       "source": "pstack/skills/setup-pstack/SKILL.md",
       "override": "overrides/skills/setup-pstack/SKILL.md",
-      "sourceHash": "d452295f927301bad320b7c306cf6cecd0c421a63c76f36ddfce1fe064c1ed03",
-      "overrideHash": "65b643c49e654f4e75c923e575dd1c7f776c9c790c89491de951921748d5f2b8",
+      "sourceHash": "9347e6a17d41c92fd9d57e689c63d81defbd63df18dbcd5e9858ab03de5994ea",
+      "overrideHash": "9cb4ddfe6bc177f1b61e204d4f0e70f3a00bd479221a7cacabdd12a985fa19fa",
       "transform": "override",
       "adapterInjected": true,
-      "sha256": "a81d6e6dfc2b1fd93a782c63dfee16e553a47d98094e0e6318005ff894e81dad",
+      "sha256": "cd3565c879bac222adccb12948157a99ff31b106b046da417700248696bde896",
       "executable": false
     },
     "skills/sharpen/SKILL.md": {
@@ -981,10 +981,10 @@
     },
     "skills/statechart/SKILL.md": {
       "source": "pstack/skills/statechart/SKILL.md",
-      "sourceHash": "010b7b4532406739b1c3a426d1a45f02bb618a42561fc96b3976e064a7f8384d",
+      "sourceHash": "ca7b3e43b1ddc4fb2425a33960f9390357323a869e1d921b6e2aff4f3004d55e",
       "transform": "copy",
       "adapterInjected": true,
-      "sha256": "807cbe2d75e6bf14e7306560e3d09465436e353a1c3de2a39ecd41c9e0939110",
+      "sha256": "bf104e2022d3de850decde766a9aafa0d915989e1f5345c6af11b4fed3048b2e",
       "executable": false
     },
     "skills/statechart/references/render.md": {
@@ -1031,9 +1031,9 @@
     },
     "skills/statechart/scripts/frontends/dot.ts": {
       "source": "pstack/skills/statechart/scripts/frontends/dot.ts",
-      "sourceHash": "4eef9ec848557dcd01ca8dbbec75b71c0653c1b73583108bafbb6f559f6d677b",
+      "sourceHash": "cd2e681ff58c759ddeaa17c2f3d4af1f0c3e71273566be555187b5d0e7767dac",
       "transform": "copy",
-      "sha256": "4eef9ec848557dcd01ca8dbbec75b71c0653c1b73583108bafbb6f559f6d677b",
+      "sha256": "cd2e681ff58c759ddeaa17c2f3d4af1f0c3e71273566be555187b5d0e7767dac",
       "executable": false
     },
     "skills/statechart/scripts/frontends/marks.ts": {
@@ -1090,6 +1090,20 @@
       "sourceHash": "5602beca4e4ac08421cfa07e4da989f0e75439f1d136cc923226909e771dc7ff",
       "transform": "copy",
       "sha256": "5602beca4e4ac08421cfa07e4da989f0e75439f1d136cc923226909e771dc7ff",
+      "executable": false
+    },
+    "skills/statechart/scripts/janitor.ts": {
+      "source": "pstack/skills/statechart/scripts/janitor.ts",
+      "sourceHash": "defac41e4cbfca3044c5078c544a0667f857a610c500c5ec96cb3bfaeec7120b",
+      "transform": "copy",
+      "sha256": "defac41e4cbfca3044c5078c544a0667f857a610c500c5ec96cb3bfaeec7120b",
+      "executable": false
+    },
+    "skills/statechart/scripts/kill.ts": {
+      "source": "pstack/skills/statechart/scripts/kill.ts",
+      "sourceHash": "058df69d1184029e55d7e81b4fd37a6dc8557c9208979fb7032482d5ab0db448",
+      "transform": "copy",
+      "sha256": "058df69d1184029e55d7e81b4fd37a6dc8557c9208979fb7032482d5ab0db448",
       "executable": false
     },
     "skills/statechart/scripts/package.json": {
@@ -1164,9 +1178,9 @@
     },
     "skills/statechart/scripts/run.ts": {
       "source": "pstack/skills/statechart/scripts/run.ts",
-      "sourceHash": "751d97cfde3c241bfeed8913fc74a7a7cbc6acd3829e37a441016af3eb78f0e0",
+      "sourceHash": "fb6ec4a1835a15e6e72df28bb932b8df5a4c04c5de6f9c270fd63ff5cd148dc7",
       "transform": "copy",
-      "sha256": "751d97cfde3c241bfeed8913fc74a7a7cbc6acd3829e37a441016af3eb78f0e0",
+      "sha256": "fb6ec4a1835a15e6e72df28bb932b8df5a4c04c5de6f9c270fd63ff5cd148dc7",
       "executable": false
     },
     "skills/statechart/scripts/statechart": {
@@ -1178,9 +1192,9 @@
     },
     "skills/statechart/scripts/statechart.ts": {
       "source": "pstack/skills/statechart/scripts/statechart.ts",
-      "sourceHash": "1c653f05d0cd0f3298455701f36e3d7d1f837f93e6e642f7c20afb5d613c2d12",
+      "sourceHash": "5d5feff7d78204c828a8e30d531d23419234a81a7149dc3e48efb08dd770d6c1",
       "transform": "copy",
-      "sha256": "1c653f05d0cd0f3298455701f36e3d7d1f837f93e6e642f7c20afb5d613c2d12",
+      "sha256": "5d5feff7d78204c828a8e30d531d23419234a81a7149dc3e48efb08dd770d6c1",
       "executable": false
     },
     "skills/statechart/scripts/test/ConfigOracle.java": {
@@ -1220,9 +1234,9 @@
     },
     "skills/statechart/scripts/test/cli.test.ts": {
       "source": "pstack/skills/statechart/scripts/test/cli.test.ts",
-      "sourceHash": "fdd3154882a0c4505868973a9de133b3f5d2140f0ca9e0a9dcfd7b2cc55871df",
+      "sourceHash": "7201a0eece44078a27f85880e2118c69bbfa072fbb9770af1db64442f03970a7",
       "transform": "copy",
-      "sha256": "fdd3154882a0c4505868973a9de133b3f5d2140f0ca9e0a9dcfd7b2cc55871df",
+      "sha256": "7201a0eece44078a27f85880e2118c69bbfa072fbb9770af1db64442f03970a7",
       "executable": false
     },
     "skills/statechart/scripts/test/config-fuzz.test.ts": {
@@ -3782,9 +3796,9 @@
     },
     "skills/statechart/scripts/test/messages.test.ts": {
       "source": "pstack/skills/statechart/scripts/test/messages.test.ts",
-      "sourceHash": "e7ca0ea446907074452df5388719598bb297d7f8ee50145b8b8f2a41c0c4c92f",
+      "sourceHash": "70dc23d0a9c76e9949f052c8f426d35463a1416aca2457d09de544654d0f5721",
       "transform": "copy",
-      "sha256": "e7ca0ea446907074452df5388719598bb297d7f8ee50145b8b8f2a41c0c4c92f",
+      "sha256": "70dc23d0a9c76e9949f052c8f426d35463a1416aca2457d09de544654d0f5721",
       "executable": false
     },
     "skills/statechart/scripts/test/pipeline.test.ts": {
