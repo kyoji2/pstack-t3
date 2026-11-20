@@ -20,6 +20,8 @@ Use the location the user requested. If no location is specified, ask whether to
 
 Ask for model preferences or a budget when the request does not provide them. The upstream budget labels are `large`, `medium`, and `small`. Upstream moves effort from each role's starting level: `large` keeps it, `medium` lowers it one step, and `small` lowers it two steps on the ladder `xhigh` > `high` > `medium` > `low`. No role runs above `xhigh`, and a model whose catalog top is lower runs at that top. A stored `unlimited` budget becomes `large`. These labels are preferences, not price estimates; translate them only when the catalog exposes compatible options and the role has a known starting level. Otherwise ask for a choice. Do not assume a provider is cheaper or a model is stronger from its name.
 
+Upstream's default Gemini panel seat is Gemini 4 Neon at xhigh. Its own budget target is xhigh for large, high for medium, and medium for small, even when the other panel seats have a different starting effort. If offering that default, select Neon and the budget-adjusted effort only when the live catalog exposes a compatible target and option; otherwise ask for a choice. Upstream migrates older Gemini 4 panel slugs and Neon high to Neon xhigh in Cursor rules, but do not automatically migrate existing T3 targets or change an explicit user choice.
+
 Show proposed roles and choices before writing unless the user has already authorized those choices. Report unavailable targets and unknown or retired roles. Never silently replace an explicit model. Preserve the requested panel size and model-family diversity.
 
 ## Write the configuration
